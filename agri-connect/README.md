@@ -59,17 +59,28 @@
 
 ---
 
+## ☁️ Deployment on Render
+
+Agri-Connect is ready for 1-click cloud deployment on [Render](https://render.com):
+
+1. **Render Blueprint (Automatic):** Connect repository on Render and create a new **Blueprint** project. Render reads `render.yaml` automatically.
+2. **Manual Web Service:**
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+---
+
 ## 🚀 How to Run Locally (Zero Cloud Dependencies)
 
 Agri-Connect is designed to run completely on **localhost** for hackathon evaluation:
 
 ### Option 1: Double-Click `run.bat`
-Simply double-click [`run.bat`](file:///C:/Users/chhav/.gemini/antigravity-ide/scratch/agri-connect/run.bat).
+Simply double-click `run.bat`.
 
 ### Option 2: Command Line
 ```powershell
-cd C:\Users\chhav\.gemini\antigravity-ide\scratch\agri-connect\backend
-"C:\Program Files\Python314\python.exe" -m uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+pip install -r requirements.txt
+python main.py
 ```
 Open **http://127.0.0.1:8000** in your browser.
 
@@ -85,4 +96,5 @@ Open **http://127.0.0.1:8000** in your browser.
   - APMC Board: `http://127.0.0.1:8000/?tenant=apmc_board`
   - FPO Cooperative: `http://127.0.0.1:8000/?tenant=fpo_coop`
   - Enterprise Buyer: `http://127.0.0.1:8000/?tenant=enterprise_buyer`
+
 

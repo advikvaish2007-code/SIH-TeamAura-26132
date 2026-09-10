@@ -1,11 +1,8 @@
 import os
-import io
 import time
-import json
-import sqlite3
 from typing import Optional
-from fastapi import FastAPI, UploadFile, File, Form, Request, HTTPException, Query
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi import FastAPI, UploadFile, File, Form, Request, Query
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -626,7 +623,9 @@ def get_price_forecast(crop: str = Query("Onion")):
             "upper_bound": round(curr * 1.03, 1)
         })
 
-    price_diff_3d = round(forecast[2]["price"] - base, 1)
+    price_val = forecast[2]["price"]
+    assert isinstance(price_val, (int, float))
+    price_diff_3d = round(float(price_val) - base, 1)
     if price_diff_3d > 40:
         recommendation = f"HOLD PRODUCE (+3 DAYS): Projected surge of +₹{price_diff_3d}/qtl due to regional export demand."
         decision_code = "HOLD"
@@ -716,19 +715,36 @@ async def send_sms_simulation(request: Request):
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
     }
 
-# ==================== FRONTEND STATIC FILES ====================
+# ==================== FRONTEND STATIC FILES & ROUTES ====================
 
-# Mount static files
+# Mount static files under /static and direct asset subdirectories
 if os.path.exists(FRONTEND_DIR):
     app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+    css_dir = os.path.join(FRONTEND_DIR, "css")
+    js_dir = os.path.join(FRONTEND_DIR, "js")
+    assets_dir = os.path.join(FRONTEND_DIR, "assets")
+    if os.path.exists(css_dir):
+        app.mount("/css", StaticFiles(directory=css_dir), name="css")
+    if os.path.exists(js_dir):
+        app.mount("/js", StaticFiles(directory=js_dir), name="js")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+@app.get("/favicon.ico")
+def serve_favicon():
+    return Response(status_code=204)
 
 @app.get("/")
+@app.get("/index.html")
 def serve_index():
     index_file = os.path.join(FRONTEND_DIR, "index.html")
     if os.path.exists(index_file):
         return FileResponse(index_file)
-    return {"message": "Frontend build in progress"}
+    return {"message": "Agri-Connect Multi-Tenant SaaS Platform Active"}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    host = os.environ.get("HOST", "0.0.0.0")
+    print(f"Starting Agri-Connect Backend on {host}:{port}")
+    uvicorn.run(app, host=host, port=port)
