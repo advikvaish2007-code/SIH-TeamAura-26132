@@ -63,7 +63,7 @@ function renderFpoPools(pools) {
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11.5px; background: rgba(0,0,0,0.2); padding: 8px 10px; border-radius: var(--radius-md); margin-bottom: 14px;">
           <div>
             <span style="color: var(--text-dim); display: block;">Institutional Rate:</span>
-            <strong style="color: #38bdf8; font-size: 13px;">₹${p.negotiated_buyer_price.toLocaleString()}/qtl</strong>
+            <strong style="color: #38bdf8; font-size: 13px;">${p.negotiated_buyer_price.toLocaleString()}/qtl</strong>
           </div>
           <div>
             <span style="color: var(--text-dim); display: block;">Shared Freight Savings:</span>
@@ -102,8 +102,8 @@ function renderFpoLedger(data) {
         <td><strong>${row.quantity_pooled_qtl} Qtl</strong></td>
         <td>${row.moisture_pct}%</td>
         <td><span class="brand-badge" style="background: rgba(56,189,248,0.15); color: #38bdf8;">${row.grade}</span></td>
-        <td>₹${row.advance_paid.toLocaleString()}</td>
-        <td style="color: #34d399; font-weight: 700;">₹${row.final_payout.toLocaleString()}</td>
+        <td>${row.advance_paid.toLocaleString()}</td>
+        <td style="color: #34d399; font-weight: 700;">${row.final_payout.toLocaleString()}</td>
         <td>
           <span style="font-size: 11px; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 600; background: ${isSettled ? 'rgba(16,185,129,0.15); color: #34d399;' : 'rgba(245,158,11,0.15); color: #fbbf24;'}">
             ${row.status}
@@ -111,7 +111,7 @@ function renderFpoLedger(data) {
         </td>
         <td>
           ${isSettled ? `
-            <span style="font-size: 11px; color: #34d399;">✓ Direct DB Transfer</span>
+            <span style="font-size: 11px; color: #34d399;"> Direct DB Transfer</span>
           ` : `
             <button class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;" onclick="settleFpoMember('${row.id}', '${row.farmer_name}', ${row.final_payout})">
               💳 1-Click Settle
@@ -177,7 +177,7 @@ async function settleFpoMember(entryId, farmerName, payoutAmount) {
       })
     });
     const result = await res.json();
-    showToast(`Instant Payout of ₹${payoutAmount.toLocaleString()} credited to ${farmerName}'s Bank A/c`, 'success');
+    showToast(`Instant Payout of ${payoutAmount.toLocaleString()} credited to ${farmerName}'s Bank A/c`, 'success');
     loadFpoData();
   } catch (err) {
     showToast("Settlement failed", "error");

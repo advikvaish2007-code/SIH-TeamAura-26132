@@ -20,7 +20,7 @@ function initNetProfitRouter() {
 
   if (dieselSlider && dieselVal) {
     dieselSlider.addEventListener('input', (e) => {
-      dieselVal.textContent = `₹${parseFloat(e.target.value).toFixed(1)} / Liter`;
+      dieselVal.textContent = `${parseFloat(e.target.value).toFixed(1)} / Liter`;
     });
   }
 
@@ -50,7 +50,7 @@ async function runProfitOptimization() {
 
   const btn = document.getElementById('opt-submit-btn');
   if (btn) {
-    btn.innerHTML = `<span>⏳ Optimizing Mandi Routes...</span>`;
+    btn.innerHTML = `<span> Optimizing Mandi Routes...</span>`;
     btn.disabled = true;
   }
 
@@ -78,7 +78,7 @@ async function runProfitOptimization() {
     showToast("Error computing profit routing", "error");
   } finally {
     if (btn) {
-      btn.innerHTML = `<span>⚡ Calculate Net Profit Route</span>`;
+      btn.innerHTML = `<span> Calculate Net Profit Route</span>`;
       btn.disabled = false;
     }
   }
@@ -88,230 +88,29 @@ function renderOptimizationResults(data) {
   const rankings = data.rankings;
   if (!rankings || rankings.length === 0) return;
 
-  const optimal = rankings[0];
-  const deceptive = rankings.find(r => r.is_deceptive_gross) || (rankings.length > 1 ? rankings[rankings.length - 1] : null);
-
-  // 1. Render Winner Highlight Card
-  const winnerCard = document.getElementById('winner-card-container');
-  if (winnerCard) {
-    winnerCard.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <div class="card-ribbon ribbon-green">
-          <span>🏆 MAXIMUM NET IN-POCKET PROFIT</span>
-        </div>
-        <span class="co2-eco-badge" title="Carbon emissions saved compared to distant deceptive route">
-          🌱 ${optimal.carbon_saved_kg} kg CO₂e Saved (Green Route)
-        </span>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-        <div>
-          <h3 style="font-size: 20px; font-weight: 700; color: #fff;">${optimal.mandi_name}</h3>
-          <p style="font-size: 13px; color: var(--text-muted);">${optimal.district}, ${optimal.state} • ${optimal.distance_km} km away (~${optimal.est_transit_hours} hrs)</p>
-        </div>
-        <span style="font-size: 11px; background: rgba(16,185,129,0.2); color: #34d399; padding: 3px 8px; border-radius: 4px; font-weight: 600;">
-          APMC Cess: ${optimal.cess_pct}%
-        </span>
-      </div>
-
-      <div style="margin: 18px 0; padding: 14px; background: rgba(0,0,0,0.25); border-radius: var(--radius-md); border-left: 3px solid #10b981;">
-        <div style="font-size: 11.5px; color: var(--text-muted); text-transform: uppercase;">True In-Pocket Realization</div>
-        <div class="profit-num-large green">₹${optimal.net_profit.toLocaleString()}</div>
-        <div style="font-size: 13px; color: #34d399; font-weight: 600;">
-          Net Rate: ₹${optimal.net_rate_per_qtl.toLocaleString()} / Quintal
-          <span style="color: var(--text-muted); font-weight: 400; font-size: 11.5px;"> (Listed Gross: ₹${optimal.modal_price.toLocaleString()})</span>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 12px; flex-wrap: wrap; gap: 8px;">
-        <div>
-          <span>Total Deductions: </span>
-          <strong style="color: #f87171;">-₹${optimal.deductions.total.toLocaleString()}</strong>
-          <span> (₹${optimal.deduction_per_qtl}/qtl)</span>
-        </div>
-        <div style="display: flex; gap: 6px;">
-          <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px;" onclick="simulateSmsDispatch('${optimal.crop_name || 'Onion'}', ${optimal.quantity_qtl}, ${optimal.net_profit}, '${optimal.mandi_name}')">
-            📲 SMS Alert
-          </button>
-          <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 11px;" onclick="openTraceabilityModal('${optimal.crop_name || 'Onion'}')">
-            📜 QR Trace
-          </button>
-          <button class="btn btn-primary" style="padding: 5px 12px; font-size: 11.5px;" onclick="bookGatePass('${optimal.mandi_id}', '${optimal.mandi_name}', ${optimal.net_profit}, ${optimal.quantity_qtl})">
-            <span>🎫 Book Token</span>
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  // 2. Render Deceptive Gross Price Warning Card
-  const deceptiveCard = document.getElementById('deceptive-card-container');
-  if (deceptiveCard && deceptive) {
-    const grossLoss = deceptive.gross_trap_loss || (optimal.net_profit - deceptive.net_profit);
-    const grossLossPerQtl = (grossLoss / optimal.quantity_qtl).toFixed(1);
-
-    deceptiveCard.innerHTML = `
-      <div class="card-ribbon ribbon-red">
-        <span>⚠ DECEPTIVE HIGH GROSS PRICE TRAP</span>
-      </div>
-      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-        <div>
-          <h3 style="font-size: 20px; font-weight: 700; color: #fff;">${deceptive.mandi_name}</h3>
-          <p style="font-size: 13px; color: var(--text-muted);">${deceptive.district}, ${deceptive.state} • ${deceptive.distance_km} km away (~${deceptive.est_transit_hours} hrs)</p>
-        </div>
-        <span style="font-size: 11px; background: rgba(239,68,68,0.2); color: #f87171; padding: 3px 8px; border-radius: 4px; font-weight: 600;">
-          High Freight & Tolls
-        </span>
-      </div>
-
-      <div style="margin: 18px 0; padding: 14px; background: rgba(0,0,0,0.25); border-radius: var(--radius-md); border-left: 3px solid #ef4444;">
-        <div style="font-size: 11.5px; color: var(--text-muted); text-transform: uppercase;">
-          Listed Gross: <strong style="color: #38bdf8;">₹${deceptive.modal_price.toLocaleString()}/qtl</strong> (Looks Attractive!)
-        </div>
-        <div class="profit-num-large red">₹${deceptive.net_profit.toLocaleString()}</div>
-        <div style="font-size: 13px; color: #f87171; font-weight: 600;">
-          Net Rate: ₹${deceptive.net_rate_per_qtl.toLocaleString()} / Qtl 
-          <span style="color: #fca5a5; font-size: 12px;">(Loss: -₹${grossLoss.toLocaleString()} vs Optimal!)</span>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 12px;">
-        <div>
-          <span>Deductions Eaten by Distance: </span>
-          <strong style="color: #f87171;">-₹${deceptive.deductions.total.toLocaleString()}</strong>
-        </div>
-        <span style="font-size: 11.5px; color: #fbbf24; font-weight: 600;">
-          CO₂: +${deceptive.carbon_emissions_kg} kg vs +${optimal.carbon_emissions_kg} kg
-        </span>
-      </div>
-    `;
-  }
-
-  // 3. Render Waterfall Cost Breakdown for Winner
-  const waterfallBox = document.getElementById('waterfall-content');
-  if (waterfallBox) {
-    const gross = optimal.gross_revenue;
-    const freightPct = ((optimal.deductions.freight / gross) * 100).toFixed(1);
-    const tollsPct = ((optimal.deductions.tolls / gross) * 100).toFixed(1);
-    const cessPct = ((optimal.deductions.mandi_cess / gross) * 100).toFixed(1);
-    const handlingPct = ((optimal.deductions.handling / gross) * 100).toFixed(1);
-    const spoilagePct = ((optimal.deductions.transit_spoilage / gross) * 100).toFixed(1);
-    const netPct = ((optimal.net_profit / gross) * 100).toFixed(1);
-
-    waterfallBox.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div style="font-size: 13px; color: var(--text-muted);">
-          Cost Deductions for <strong>${optimal.mandi_name}</strong> (Gross Revenue: <strong>₹${gross.toLocaleString()}</strong>)
-        </div>
-        <button class="btn btn-secondary" style="font-size: 11px; padding: 3px 8px;" onclick="toggleExplainabilityFormula()">
-          📐 Formula Explainability
-        </button>
-      </div>
-
-      <!-- Collapsible Explainability Formula Card -->
-      <div id="explainability-formula-card" class="explain-card" style="display: none; margin-bottom: 16px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <strong style="font-size: 13px; color: #38bdf8;">SIH 2026 PS-132 Algorithmic Proof:</strong>
-          <span class="brand-badge" style="background: rgba(56,189,248,0.15); color: #38bdf8;">Exact Mathematical Derivation</span>
-        </div>
-        <div class="math-formula-box">
-          Net Profit = (Mandi Price × Quantity) - [Freight + Tolls + Mandi Cess + Handling + Spoilage]
-          <br>
-          = (₹${optimal.modal_price} × ${optimal.quantity_qtl}) - [₹${optimal.deductions.freight} + ₹${optimal.deductions.tolls} + ₹${optimal.deductions.mandi_cess} + ₹${optimal.deductions.handling} + ₹${optimal.deductions.transit_spoilage}]
-          <br>
-          = ₹${gross.toLocaleString()} - ₹${optimal.deductions.total.toLocaleString()}
-          <br>
-          = ₹${optimal.net_profit.toLocaleString()} (Net Rate: ₹${optimal.net_rate_per_qtl}/Qtl)
-        </div>
-        <div style="font-size: 11.5px; color: var(--text-muted);">
-          * Freight dynamically indexed to Diesel (₹${data.diesel_price}/L) and haulage vehicle type (${data.vehicle_info.name}).
-        </div>
-      </div>
-
-      <div class="waterfall-bars">
-        <div class="waterfall-item">
-          <div class="waterfall-label">1. Diesel Freight</div>
-          <div class="waterfall-bar-track">
-            <div class="waterfall-bar-fill" style="width: ${Math.max(4, freightPct)}%; background: #f97316;"></div>
-          </div>
-          <div class="waterfall-val" style="color: #f97316;">-₹${optimal.deductions.freight.toLocaleString()}</div>
-        </div>
-        <div class="waterfall-item">
-          <div class="waterfall-label">2. Highway Tolls (${optimal.toll_plazas_est} Plazas)</div>
-          <div class="waterfall-bar-track">
-            <div class="waterfall-bar-fill" style="width: ${Math.max(4, tollsPct)}%; background: #fbbf24;"></div>
-          </div>
-          <div class="waterfall-val" style="color: #fbbf24;">-₹${optimal.deductions.tolls.toLocaleString()}</div>
-        </div>
-        <div class="waterfall-item">
-          <div class="waterfall-label">3. Mandi Cess (${optimal.cess_pct}%)</div>
-          <div class="waterfall-bar-track">
-            <div class="waterfall-bar-fill" style="width: ${Math.max(4, cessPct)}%; background: #38bdf8;"></div>
-          </div>
-          <div class="waterfall-val" style="color: #38bdf8;">-₹${optimal.deductions.mandi_cess.toLocaleString()}</div>
-        </div>
-        <div class="waterfall-item">
-          <div class="waterfall-label">4. Handling & Weighing</div>
-          <div class="waterfall-bar-track">
-            <div class="waterfall-bar-fill" style="width: ${Math.max(4, handlingPct)}%; background: #c084fc;"></div>
-          </div>
-          <div class="waterfall-val" style="color: #c084fc;">-₹${optimal.deductions.handling.toLocaleString()}</div>
-        </div>
-        <div class="waterfall-item">
-          <div class="waterfall-label">5. Transit Spoilage / Shrinkage</div>
-          <div class="waterfall-bar-track">
-            <div class="waterfall-bar-fill" style="width: ${Math.max(4, spoilagePct)}%; background: #f43f5e;"></div>
-          </div>
-          <div class="waterfall-val" style="color: #f43f5e;">-₹${optimal.deductions.transit_spoilage.toLocaleString()}</div>
-        </div>
-        <div class="waterfall-item" style="border-top: 1px solid var(--border-subtle); padding-top: 10px; margin-top: 6px;">
-          <div class="waterfall-label"><strong style="color: #fff;">Net In-Pocket Profit</strong></div>
-          <div class="waterfall-bar-track">
-            <div class="waterfall-bar-fill" style="width: ${netPct}%; background: #10b981;"></div>
-          </div>
-          <div class="waterfall-val" style="color: #34d399; font-size: 14px;">₹${optimal.net_profit.toLocaleString()} (${netPct}%)</div>
-        </div>
-      </div>
-    `;
-  }
-
-  // 4. Render Price Forecast Widget
-  renderPriceForecast(data.crop_name);
-
-  // 4. Render Mandi Comparison Matrix Table
-  const tableBody = document.getElementById('mandi-comparison-tbody');
-  if (tableBody) {
-    tableBody.innerHTML = rankings.map((r, idx) => {
+  const resultsContainer = document.getElementById('mandi-comparison-tbody');
+  if (resultsContainer) {
+    resultsContainer.innerHTML = rankings.map((r, idx) => {
       const isOptimal = r.is_optimal_net;
-      const isTrap = r.is_deceptive_gross;
+      
       return `
-        <tr class="${isOptimal ? 'optimal-row' : ''}">
-          <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-weight: 700; color: ${isOptimal ? '#34d399' : 'var(--text-muted)'};">#${idx + 1}</span>
-              <div>
-                <strong>${r.mandi_name}</strong>
-                <div style="font-size: 11px; color: var(--text-dim);">${r.district}, ${r.state}</div>
-              </div>
-              ${isOptimal ? '<span class="brand-badge" style="background: rgba(16,185,129,0.2);">OPTIMAL</span>' : ''}
-              ${isTrap ? '<span class="brand-badge" style="background: rgba(239,68,68,0.2); color: #f87171; border-color: rgba(239,68,68,0.4);">GROSS TRAP</span>' : ''}
-            </div>
-          </td>
-          <td>${r.distance_km} km <div style="font-size: 11px; color: var(--text-dim);">${r.est_transit_hours} hrs</div></td>
-          <td><strong>₹${r.modal_price.toLocaleString()}</strong></td>
-          <td style="color: #f87171;">-₹${r.deductions.total.toLocaleString()} <div style="font-size: 11px; color: var(--text-dim);">(₹${r.deduction_per_qtl}/q)</div></td>
-          <td style="font-weight: 700; font-size: 14px; color: ${isOptimal ? '#34d399' : 'var(--text-main)'};">
-            ₹${r.net_profit.toLocaleString()}
-          </td>
-          <td>
-            <strong style="color: ${isOptimal ? '#34d399' : 'var(--text-main)'};">₹${r.net_rate_per_qtl.toLocaleString()}</strong> / qtl
-          </td>
-          <td>
-            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11.5px;" onclick="bookGatePass('${r.mandi_id}', '${r.mandi_name}', ${r.net_profit}, ${r.quantity_qtl})">
-              Book Pass
-            </button>
-          </td>
-        </tr>
+        <div class="mandi-card ${isOptimal ? 'optimal' : ''}">
+          <div class="mc-rank">${idx + 1}</div>
+          <div>
+            <div class="mc-name">${r.mandi_name} ${isOptimal ? '<span style="font-size: 0.75rem; background: var(--farmer-forest); color: #fff; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle;">OPTIMAL</span>' : ''}</div>
+            <div class="mc-dist"><i class="ph ph-map-pin"></i> ${r.distance_km} km (${r.est_transit_hours} hrs) | ${r.district}, ${r.state}</div>
+          </div>
+          <div>
+            <div class="mc-metric-label">Gross Listed</div>
+            <div style="font-size: 1.1rem; font-weight: 600;">₹${r.modal_price.toLocaleString()}</div>
+            <div style="font-size: 0.8rem; color: var(--danger);">-${r.deductions.total.toLocaleString()} freight/cess</div>
+          </div>
+          <div style="text-align: right;">
+            <div class="mc-metric-label">True Net Profit</div>
+            <div class="mc-net-profit">₹${r.net_profit.toLocaleString()}</div>
+            <button class="farmer-btn" style="padding: 8px 12px; font-size: 0.75rem; margin-top: 8px;" onclick="bookGatePass('${r.mandi_id}', '${r.mandi_name}', ${r.net_profit}, ${r.quantity_qtl})">Book Token</button>
+          </div>
+        </div>
       `;
     }).join('');
   }
@@ -329,7 +128,7 @@ function bookGatePass(mandiId, mandiName, netProfit, qty) {
     modalContent.innerHTML = `
       <div style="text-align: center; margin-bottom: 20px;">
         <div style="width: 52px; height: 52px; background: rgba(16,185,129,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; color: #10b981; margin-bottom: 8px;">
-          ✓
+          
         </div>
         <h3 style="font-size: 20px; font-weight: 700;">APMC Mandi Priority Gate Token</h3>
         <p style="font-size: 13px; color: var(--text-muted);">Verified Electronic Transit Token under National e-NAM Gateway</p>
@@ -370,7 +169,7 @@ function bookGatePass(mandiId, mandiName, netProfit, qty) {
         </div>
         <div style="background: var(--bg-main); padding: 10px 14px; border-radius: var(--radius-md);">
           <span style="color: var(--text-muted); font-size: 11px; display: block;">Expected Net Realization</span>
-          <strong style="color: #34d399;">₹${netProfit.toLocaleString()}</strong>
+          <strong style="color: #34d399;">${netProfit.toLocaleString()}</strong>
         </div>
       </div>
 
@@ -413,7 +212,7 @@ async function renderPriceForecast(cropName = "Onion") {
     container.innerHTML = `
       <div class="decision-advisory-banner ${isHold ? 'decision-hold' : 'decision-sell'}">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 16px;">${isHold ? '📈' : '⚡'}</span>
+          <span style="font-size: 16px;">${isHold ? '📈' : ''}</span>
           <span><strong>AI Forecast Advisory (Beta):</strong> ${data.recommendation}</span>
         </div>
         <span class="brand-badge" style="background: rgba(0,0,0,0.25); color: #fff; font-size: 11px;">
@@ -425,19 +224,19 @@ async function renderPriceForecast(cropName = "Onion") {
         ${data.history.slice(-4).map(h => `
           <div style="background: rgba(255,255,255,0.03); padding: 6px 4px; border-radius: var(--radius-sm);">
             <div style="color: var(--text-dim); font-size: 10px;">${h.date}</div>
-            <strong style="color: var(--text-muted);">₹${h.price}</strong>
+            <strong style="color: var(--text-muted);">${h.price}</strong>
           </div>
         `).join('')}
 
         <div style="background: rgba(16,185,129,0.15); border: 1px solid #10b981; padding: 6px 4px; border-radius: var(--radius-sm);">
           <div style="color: #34d399; font-size: 10px; font-weight: 700;">TODAY</div>
-          <strong style="color: #34d399;">₹${data.current_price}</strong>
+          <strong style="color: #34d399;">${data.current_price}</strong>
         </div>
 
         ${data.forecast.slice(0, 2).map(f => `
           <div style="background: rgba(56,189,248,0.1); border: 1px dashed #38bdf8; padding: 6px 4px; border-radius: var(--radius-sm);">
             <div style="color: #38bdf8; font-size: 10px; font-weight: 600;">${f.day} (AI)</div>
-            <strong style="color: #38bdf8;">₹${f.price}</strong>
+            <strong style="color: #38bdf8;">${f.price}</strong>
           </div>
         `).join('')}
       </div>

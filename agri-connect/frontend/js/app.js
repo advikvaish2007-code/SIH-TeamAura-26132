@@ -217,8 +217,8 @@ function renderTicker(prices) {
     return `
       <div class="ticker-item">
         <span class="ticker-crop">${p.crop_name} (${p.mandi_name})</span>
-        <span class="ticker-price">₹${p.modal_price.toLocaleString()}/qtl</span>
-        <span class="ticker-trend ${isUp ? 'up' : 'down'}">${isUp ? '▲ +2.8%' : '▼ -1.2%'}</span>
+        <span class="ticker-price">${p.modal_price.toLocaleString()}/qtl</span>
+        <span class="ticker-trend ${isUp ? 'up' : 'down'}">${isUp ? ' +2.8%' : ' -1.2%'}</span>
       </div>
     `;
   }).join('');
@@ -237,7 +237,7 @@ function showToast(message, type = 'info') {
 
   toast.innerHTML = `
     <div style="display: flex; align-items: center; gap: 8px;">
-      <span>${type === 'success' ? '✓' : type === 'error' ? '⚠' : 'ℹ'}</span>
+      <span>${type === 'success' ? '' : type === 'error' ? '' : ''}</span>
       <span>${message}</span>
     </div>
   `;
@@ -301,7 +301,7 @@ function start15SecDemoTour() {
 
   // Beat 1: 0 - 5s -> Farmer View
   switchTenant('farmer', true);
-  text.innerHTML = `<strong>[Beat 1/3 - Farmer View]</strong> Calculating True Net Profit & ESG Carbon Score. Notice the +218 kg CO₂ Saved badge and 7-Day Forecast!`;
+  text.innerHTML = `<strong>[Beat 1/3 - Farmer View]</strong> Calculating True Net Profit & ESG Carbon Score. Notice the +218 kg CO Saved badge and 7-Day Forecast!`;
   const routerEl = document.getElementById('net-profit-router-section');
   if (routerEl) routerEl.scrollIntoView({ behavior: 'smooth' });
 
@@ -386,11 +386,11 @@ async function openTrustScoreModal(farmerName = "Rameshwar Patil") {
           </span>
         </div>
         <div style="font-size: 13px; color: #e2e8f0; margin-bottom: 12px;">
-          Based on your verified delivery history, you are pre-qualified for <strong>₹${data.credit_pre_qualification.max_credit_limit_inr.toLocaleString()}</strong> at a subsidized interest rate of <strong>${data.credit_pre_qualification.interest_rate_pct}% p.a.</strong>
+          Based on your verified delivery history, you are pre-qualified for <strong>${data.credit_pre_qualification.max_credit_limit_inr.toLocaleString()}</strong> at a subsidized interest rate of <strong>${data.credit_pre_qualification.interest_rate_pct}% p.a.</strong>
         </div>
         <div style="display: flex; gap: 8px;">
           <button class="btn btn-primary" style="flex: 1;" onclick="showToast('Instant Pre-Harvest Credit Application Dispatched to Kisan Credit Card Portal', 'success'); closeModal('trust-score-modal');">
-            ⚡ Claim Instant ₹1.5 Lakh Credit
+             Claim Instant 1.5 Lakh Credit
           </button>
         </div>
       </div>
@@ -444,7 +444,7 @@ function openTraceabilityModal(crop = "Onion", lot = "LOT-NAS-2026-09") {
       </div>
       <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
         <span style="color: var(--text-muted);">Farmer Aadhaar KYC:</span>
-        <strong style="color: #34d399;">✓ UIDAI Biometric Verified</strong>
+        <strong style="color: #34d399;"> UIDAI Biometric Verified</strong>
       </div>
       <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
         <span style="color: var(--text-muted);">AI Quality Grade:</span>

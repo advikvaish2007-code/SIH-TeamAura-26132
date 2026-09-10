@@ -35,8 +35,8 @@ function renderApmcAnalytics(data) {
   const anomaliesCount = document.getElementById('apmc-stat-anomalies');
 
   if (mandisCount) mandisCount.textContent = "305 Active";
-  if (cessDaily) cessDaily.textContent = `₹${(data.daily_cess_collection_inr / 100000).toFixed(2)} Lakhs`;
-  if (cessMonth) cessMonth.textContent = `₹${data.monthly_projected_cess_cr.toFixed(2)} Cr`;
+  if (cessDaily) cessDaily.textContent = `${(data.daily_cess_collection_inr / 100000).toFixed(2)} Lakhs`;
+  if (cessMonth) cessMonth.textContent = `${data.monthly_projected_cess_cr.toFixed(2)} Cr`;
   if (anomaliesCount) anomaliesCount.textContent = `${data.anomalies.length} Flagged`;
 
   // Anomaly & Anti-Hoarding Alerts
@@ -53,7 +53,7 @@ function renderApmcAnalytics(data) {
               <strong style="color: #fff;">${a.crop_name} (${a.variety}) at ${a.mandi_name}</strong>
             </div>
             <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
-              Abnormal Spread: Modal ₹${a.modal_price}/qtl vs Min ₹${a.min_price} (Volatility Index: ${a.volatility_index})
+              Abnormal Spread: Modal ${a.modal_price}/qtl vs Min ${a.min_price} (Volatility Index: ${a.volatility_index})
             </div>
           </div>
           <button class="btn btn-outline-danger" style="padding: 4px 10px; font-size: 11.5px;" onclick="dispatchEnforcementSquad('${a.mandi_name}', '${a.crop_name}')">
@@ -72,8 +72,8 @@ function renderApmcAnalytics(data) {
         <div style="display: flex; align-items: center; gap: 12px;">
           <span style="font-size: 18px;">🚛</span>
           <div>
-            <div style="font-weight: 600; color: #fff;">${flow.from} ➔ ${flow.to}</div>
-            <div style="font-size: 11.5px; color: var(--text-muted);">${flow.commodity} • Volume: <strong>${flow.volume_tons} MT</strong></div>
+            <div style="font-weight: 600; color: #fff;">${flow.from}  ${flow.to}</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">${flow.commodity}  Volume: <strong>${flow.volume_tons} MT</strong></div>
           </div>
         </div>
         <span style="font-size: 11px; padding: 3px 8px; border-radius: var(--radius-full); font-weight: 600; ${flow.transit_status === 'NORMAL' ? 'background: rgba(16,185,129,0.15); color: #34d399;' : 'background: rgba(245,158,11,0.15); color: #fbbf24;'}">
@@ -90,10 +90,10 @@ function renderApmcAnalytics(data) {
       <tr>
         <td><strong>${arr.name}</strong> <span style="font-size: 11px; color: var(--text-dim); display: block;">${arr.district}</span></td>
         <td>${arr.crop_name}</td>
-        <td><strong>₹${arr.modal_price.toLocaleString()}</strong> / qtl</td>
+        <td><strong>${arr.modal_price.toLocaleString()}</strong> / qtl</td>
         <td>${arr.arrivals_tons.toLocaleString()} MT</td>
         <td><span style="color: #38bdf8;">${arr.base_cess_pct}%</span></td>
-        <td style="color: #34d399; font-weight: 700;">₹${parseFloat(arr.est_daily_cess).toLocaleString()}</td>
+        <td style="color: #34d399; font-weight: 700;">${parseFloat(arr.est_daily_cess).toLocaleString()}</td>
       </tr>
     `).join('');
   }
@@ -116,7 +116,7 @@ function renderApmcDisputes(disputes) {
         </td>
         <td>${d.respondent_name}</td>
         <td style="max-width: 240px; font-size: 12px;">${d.issue_type}</td>
-        <td><strong>₹${d.claim_amount.toLocaleString()}</strong></td>
+        <td><strong>${d.claim_amount.toLocaleString()}</strong></td>
         <td>
           <span style="font-size: 11px; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 600; background: ${badgeClass}">
             ${d.status}
@@ -210,7 +210,7 @@ async function initApmcLeafletMap() {
             Arrivals Today: <strong style="color: #fff;">${d.arrivals_tons} MT</strong>
           </div>
           <div style="color: #94a3b8; margin-bottom: 6px;">
-            Daily Cess Accrued: <strong style="color: #34d399;">₹${d.cess_accrual_lakhs} Lakhs</strong>
+            Daily Cess Accrued: <strong style="color: #34d399;">${d.cess_accrual_lakhs} Lakhs</strong>
           </div>
           <div>
             Status: <span style="padding: 2px 6px; border-radius: 3px; font-weight: 700; font-size: 10px; background: ${isAlert ? 'rgba(239,68,68,0.2); color: #f87171;' : 'rgba(16,185,129,0.2); color: #34d399;'}">${d.status}</span>

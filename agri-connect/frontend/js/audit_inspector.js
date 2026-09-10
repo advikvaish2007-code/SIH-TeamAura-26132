@@ -43,7 +43,7 @@ async function refreshAuditLogs() {
         </td>
         <td>
           <span style="font-size: 10.5px; padding: 2px 6px; border-radius: 3px; font-weight: 700; background: rgba(16,185,129,0.15); color: #34d399;">
-            ✓ ISOLATED
+             ISOLATED
           </span>
         </td>
       </tr>
@@ -59,7 +59,7 @@ async function testCrossTenantIsolation() {
     resultBox.style.display = 'block';
     resultBox.innerHTML = `
       <div style="text-align: center; padding: 14px; color: #38bdf8;">
-        ⏳ Executing Simulated Cross-Tenant Probe: Enterprise Buyer (TEN-ENT-902) ➔ FPO Member Ledger (TEN-FPO-774)...
+         Executing Simulated Cross-Tenant Probe: Enterprise Buyer (TEN-ENT-902)  FPO Member Ledger (TEN-FPO-774)...
       </div>
     `;
   }

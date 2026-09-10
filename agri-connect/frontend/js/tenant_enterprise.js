@@ -71,7 +71,7 @@ function renderEnterpriseRfqs(rfqs) {
             </span>
             <strong style="color: #fff; font-size: 16px;">${r.crop_name} (${r.variety})</strong>
           </div>
-          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${r.buyer_org} • Delivery: ${r.delivery_location}</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${r.buyer_org}  Delivery: ${r.delivery_location}</div>
         </div>
         <span style="font-size: 11px; padding: 3px 8px; border-radius: var(--radius-full); font-weight: 600; background: rgba(16,185,129,0.15); color: #34d399;">
           🛡️ ${r.escrow_status}
@@ -85,11 +85,11 @@ function renderEnterpriseRfqs(rfqs) {
         </div>
         <div>
           <span style="color: var(--text-dim); display: block;">Target Procurement Price</span>
-          <strong style="font-size: 14px; color: #38bdf8;">₹${r.target_price_qtl}/qtl</strong>
+          <strong style="font-size: 14px; color: #38bdf8;">${r.target_price_qtl}/qtl</strong>
         </div>
         <div>
           <span style="color: var(--text-dim); display: block;">Escrow Locked Amount</span>
-          <strong style="font-size: 14px; color: #34d399;">₹${r.escrow_amount.toLocaleString()}</strong>
+          <strong style="font-size: 14px; color: #34d399;">${r.escrow_amount.toLocaleString()}</strong>
         </div>
         <div>
           <span style="color: var(--text-dim); display: block;">Spec Requirement</span>
@@ -138,7 +138,7 @@ async function runAiCropScan() {
   const resultCard = document.getElementById('ai-result-card');
 
   if (btn) {
-    btn.innerHTML = `<span>⚡ Scanning Grain Spectrometry...</span>`;
+    btn.innerHTML = `<span> Scanning Grain Spectrometry...</span>`;
     btn.disabled = true;
   }
   if (viewport) viewport.classList.add('scanning');
@@ -195,7 +195,7 @@ function renderAiInspectionResult(data) {
           ${data.certificate_hash}
         </span>
         <h3 style="font-size: 18px; font-weight: 700; color: #fff; margin-top: 6px;">AGMARK Digital Quality Certificate</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">${data.crop_name} Sample • Analyzed at ${data.analysis_timestamp}</p>
+        <p style="font-size: 12px; color: var(--text-muted);">${data.crop_name} Sample  Analyzed at ${data.analysis_timestamp}</p>
       </div>
       <div class="ai-grade-badge-huge ${gradeClass}">
         ${data.agmark_grade}
@@ -228,7 +228,7 @@ function renderAiInspectionResult(data) {
     <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); padding: 12px 16px; border-radius: var(--radius-md);">
       <div>
         <span style="font-size: 11px; color: var(--text-muted); display: block;">AI Recommended Fair Settlement Price</span>
-        <strong style="font-size: 20px; color: #34d399;">₹${data.fair_price_recommendation.toLocaleString()} / Quintal</strong>
+        <strong style="font-size: 20px; color: #34d399;">${data.fair_price_recommendation.toLocaleString()} / Quintal</strong>
         <span style="font-size: 11px; color: #34d399;"> (${data.price_modifier_pct >= 0 ? '+' : ''}${data.price_modifier_pct}% quality premium applied)</span>
       </div>
       <button class="btn btn-primary" onclick="showToast('Cryptographic Quality Certificate stamped on Blockchain Ledger', 'success')">
@@ -251,7 +251,7 @@ function scrollToAiGrader(cropName) {
 }
 
 function releaseEscrowFunds(rfqId, amount) {
-  showToast(`Escrow Milestone Met: ₹${amount.toLocaleString()} released to FPO Escrow Account for ${rfqId}`, 'success');
+  showToast(`Escrow Milestone Met: ${amount.toLocaleString()} released to FPO Escrow Account for ${rfqId}`, 'success');
 }
 
 async function submitBuyerRfq() {
@@ -279,7 +279,7 @@ async function submitBuyerRfq() {
       })
     });
     const result = await res.json();
-    showToast(`Tender ${result.rfq_id} published and ₹${result.escrow_amount.toLocaleString()} locked in Escrow`, 'success');
+    showToast(`Tender ${result.rfq_id} published and ${result.escrow_amount.toLocaleString()} locked in Escrow`, 'success');
     closeModal('enterprise-rfq-modal');
     loadEnterpriseData();
   } catch (err) {

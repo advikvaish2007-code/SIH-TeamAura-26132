@@ -3,16 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agri-Connect | Multi-Tenant Agri-Marketplace SaaS (SIH 2026 PS-132)</title>
-  <meta name="description" content="AI-Driven Net Profit Mandi Router and Multi-Tenant SaaS Prototype for SIH 2026 PS-132. Features State APMC oversight, FPO bulk pooling, Enterprise bidding, and Computer Vision crop quality grading.">
-  <meta name="keywords" content="SIH 2026, PS-132, Agri-Connect, Mandi Price, Net Profit Optimizer, APMC, FPO, AI Crop Grading">
+  <title>Agri-Connect | Multi-Tenant Platform</title>
+  
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Leaflet Map CDN for Govt Analyst Heatmap -->
+  <!-- Leaflet Map CDN -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -22,1117 +18,470 @@
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
+  <!-- App Shell Header -->
   <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <div class="brand-icon">🌱</div>
-        <div class="brand-info">
-          <h1>
-            Agri-Connect
-            <span class="brand-badge">SIH 2026 PS-132</span>
-          </h1>
-          <div class="brand-sub">Multi-Tenant Agri-Marketplace & Net Profit Router</div>
-        </div>
+    <div class="brand">
+      <div class="brand-icon"><i class="ph ph-plant"></i></div>
+      <div class="brand-info">
+        <h1>Agri-Connect</h1>
       </div>
+    </div>
+    
+    <div class="shell-controls">
+      <select class="shell-select" id="tools-select" onchange="handleToolsSelect(this.value)">
+        <option value="">Tools & Settings</option>
+        <option value="tour">Demo Tour</option>
+        <option value="ussd">USSD/SMS Gateway</option>
+        <option value="ledger">Trust Ledger</option>
+        <option value="passport">Traceability Passport</option>
+        <option value="audit">Security: Data Isolation Inspector</option>
+      </select>
 
-      <!-- Tenant Switcher & Actions -->
-      <div class="header-actions">
-        <!-- Scripted 15-Second Judge Demo Tour Button -->
-        <button class="btn btn-primary" onclick="start15SecDemoTour()" style="background: linear-gradient(135deg, #0284c7, #0f766e); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 0 16px rgba(14,165,233,0.4);" title="Automated 15-second multi-tenant demo tour for SIH judges">
-          <span>🎬 15-Sec Judge Demo Tour</span>
-        </button>
-
-        <!-- Live Tenant Switcher Pill -->
-        <div class="tenant-selector-wrapper">
-          <div class="tenant-pill" id="tenant-pill-trigger" title="Click to Switch Multi-Tenant View">
-            <span class="tenant-pill-dot" id="active-tenant-dot"></span>
-            <span id="active-tenant-icon">🌾</span>
-            <span class="tenant-pill-text" id="active-tenant-name">Kisan Krishi Direct</span>
-            <span class="tenant-pill-id" id="active-tenant-id">TEN-FARM-001</span>
-            <span style="font-size: 11px; color: var(--text-dim);">▼</span>
-          </div>
-
-          <!-- Dropdown Menu -->
-          <div class="tenant-dropdown" id="tenant-dropdown">
-            <div class="tenant-dropdown-header">Select Multi-Tenant View</div>
-            
-            <div class="tenant-option active" data-tenant="farmer">
-              <div class="tenant-opt-icon">🌾</div>
-              <div class="tenant-opt-details">
-                <h4>Farmer Direct & Profit Router</h4>
-                <p>Crop listing, live mandi tickers & net profit optimizer</p>
-                <div class="tenant-opt-tag">TENANT: TEN-FARM-001</div>
-              </div>
-            </div>
-
-            <div class="tenant-option" data-tenant="apmc_board">
-              <div class="tenant-opt-icon">🏛️</div>
-              <div class="tenant-opt-details">
-                <h4>State APMC Regulatory Board</h4>
-                <p>White-labeled macro oversight, cess tracking & anti-hoarding</p>
-                <div class="tenant-opt-tag">TENANT: TEN-APMC-MH01</div>
-              </div>
-            </div>
-
-            <div class="tenant-option" data-tenant="fpo_coop">
-              <div class="tenant-opt-icon">🤝</div>
-              <div class="tenant-opt-details">
-                <h4>Sahyadri FPO Cooperative</h4>
-                <p>Bulk pooling aggregation & isolated member ledger</p>
-                <div class="tenant-opt-tag">TENANT: TEN-FPO-774</div>
-              </div>
-            </div>
-
-            <div class="tenant-option" data-tenant="enterprise_buyer">
-              <div class="tenant-opt-icon">🏢</div>
-              <div class="tenant-opt-details">
-                <h4>ITC Enterprise Agri-Procure</h4>
-                <p>Institutional RFQs, escrow release & AI crop grading</p>
-                <div class="tenant-opt-tag">TENANT: TEN-ENT-902</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Special Judge Multi-Tenant Audit Inspector Button -->
-        <button class="btn btn-audit" id="btn-open-audit" title="Proof of Multi-Tenant Data Isolation">
-          <span>🛡️ Data Isolation Inspector</span>
-        </button>
-
-        <!-- Vernacular Language Toggle -->
-        <button class="btn btn-secondary" id="lang-toggle-btn" onclick="toggleLanguage()" style="padding: 6px 12px; font-size: 12px;">
-          हिंदी
-        </button>
-      </div>
+      <button class="btn" id="lang-toggle-btn" onclick="toggleLanguage()">हिंदी</button>
+      
+      <select class="shell-select" id="tenant-switcher" onchange="switchDashboard(this.value)">
+        <option value="landing">Overview</option>
+        <option value="farmer">Farmer Direct (TEN-FARM-001)</option>
+        <option value="apmc">State APMC (TEN-APMC-MH01)</option>
+        <option value="fpo">FPO Cooperative (TEN-FPO-774)</option>
+        <option value="enterprise">Enterprise Procurement (TEN-ENT-902)</option>
+      </select>
     </div>
   </header>
 
-  <!-- Scripted 15-Second Demo Tour Floating Narration Bar -->
-  <div class="demo-tour-banner" id="demo-tour-banner">
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <span style="font-size: 20px;">🎬</span>
-      <div>
-        <div style="font-weight: 700; font-size: 13px; letter-spacing: 0.5px;">15-SEC CHOREOGRAPHED MULTI-TENANT JUDGE DEMO</div>
-        <div id="tour-step-text" style="font-size: 12px; color: #f0fdf4;">Initializing automated walkthrough...</div>
-      </div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 14px;">
-      <div class="tour-progress-track">
-        <div class="tour-progress-bar" id="tour-progress-bar"></div>
-      </div>
-      <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px; background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.3);" onclick="stopDemoTour()">
-        ✕ Stop
-      </button>
-    </div>
-  </div>
-
-  <!-- ==================== LIVE MANDI PRICE TICKER ==================== -->
-  <div class="ticker-bar">
-    <div class="ticker-label">
-      <span>🔴 LIVE APMC TICKER</span>
-    </div>
-    <div class="ticker-track" id="ticker-track">
-      <!-- Injected by JavaScript -->
-      <div class="ticker-item"><span class="ticker-crop">Loading live mandi rates...</span></div>
-    </div>
-  </div>
-
-  <main class="container">
-
-    <!-- =========================================================================
-         VIEW 1: FARMER DIRECT & NET PROFIT OPTIMIZER (SIH 2026 PS-132 CORE USP)
-         ========================================================================= -->
-    <div class="tenant-view active" id="view-farmer">
+  <main>
+    
+    <!-- ==========================================
+         LANDING VIEW (MARKETING REGISTER)
+         ========================================== -->
+    <div id="view-landing" class="tenant-view active" style="padding: 0;">
       
-      <!-- Banner -->
-      <div class="view-header-banner farmer-theme">
-        <div class="view-title-wrap">
-          <h2>
-            <span>🌾</span> Kisan Krishi Direct Portal & Net Profit Router
-          </h2>
-          <p>Don't fall for high gross mandi rates! Calculate true in-pocket earnings after freight, tolls, cess, and spoilage deductions.</p>
-        </div>
-        <div class="tenant-meta-badge">
-          <div class="tenant-security-tag">
-            <span>🛡️ Isolated Tenant Context</span>
-          </div>
-          <span class="tenant-id-label">TEN-FARM-001 (Kisan Direct)</span>
-        </div>
-      </div>
-
-      <!-- Gamified Adoption Loop & Farmer Trust Score Strip -->
-      <div class="gamification-strip">
-        <div class="gamify-item">
-          <span style="font-size: 22px;">🔥</span>
+      <!-- HERO: Ink Background -->
+      <section class="section-ink">
+        <div class="container hero-grid">
           <div>
-            <div style="font-size: 12.5px; font-weight: 700; color: #fff;">4-Week Listing Streak</div>
-            <div style="font-size: 11px; color: var(--text-muted);">Active Harvest Regular Producer</div>
+            <h1 class="serif-heading display-hero">Infrastructure routing & regulatory oversight on a single ledger.</h1>
+            <p class="stat-caption text-dim-inverse">Agri-Connect is the multi-tenant backend bridging smallholder farmers directly to institutional procurement, backed by row-level security.</p>
           </div>
-        </div>
-
-        <div class="gamify-item">
-          <span style="font-size: 22px;">🏅</span>
-          <div>
-            <div style="font-size: 12.5px; font-weight: 700; color: #fff;">Gram Panchayat Rank #2</div>
-            <div style="font-size: 11px; color: var(--text-muted);">Niphad Block Top Quality Producer</div>
-          </div>
-        </div>
-
-        <div class="gamify-item">
-          <span style="font-size: 22px;">🪙</span>
-          <div>
-            <div style="font-size: 12.5px; font-weight: 700; color: #fbbf24;">150 Krishi Coins</div>
-            <div style="font-size: 11px; color: var(--text-muted);">Redeemable for Soil Health & Fertilizer Pool</div>
-          </div>
-        </div>
-
-        <div class="trust-score-pill" onclick="openTrustScoreModal('Rameshwar Patil')" title="Click to view Creditworthiness & Pre-Approved Micro-Loans">
-          <span>🛡️</span>
-          <span style="font-size: 12px; font-weight: 700; color: #38bdf8;">Kisan Trust Score: 88/100</span>
-          <span style="font-size: 10px; background: #38bdf8; color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 800;">PLATINUM</span>
-          <span style="font-size: 11px; color: #38bdf8;">➔ Pre-Approved Credit</span>
-        </div>
-      </div>
-
-      <!-- Quick Metrics -->
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Tracked APMC Mandis</span>
-            <div class="stat-icon">🏛️</div>
-          </div>
-          <div class="stat-value">8 Mandis</div>
-          <div class="stat-sub positive">Maharashtra, MP, Gujarat, Delhi</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Average Profit Difference</span>
-            <div class="stat-icon">📈</div>
-          </div>
-          <div class="stat-value">+₹245 / Qtl</div>
-          <div class="stat-sub positive">Net Profit vs Deceptive Gross Mandi</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">FPO Bulk Pooling Available</span>
-            <div class="stat-icon">🤝</div>
-          </div>
-          <div class="stat-value">3 Pools Open</div>
-          <div class="stat-sub">Save ~38.5% on shared logistics</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Institutional Buyer RFQs</span>
-            <div class="stat-icon">🏢</div>
-          </div>
-          <div class="stat-value">₹70.3 Lakhs</div>
-          <div class="stat-sub positive">Escrow Protected Procurement</div>
-        </div>
-      </div>
-
-      <!-- THE NET PROFIT OPTIMIZER PANEL (CORE USP) -->
-      <div class="panel" id="net-profit-router-section">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">
-              <span>🧭</span> Net Profit Mandi Route Navigator (SIH 2026 Core Algorithm)
-            </h3>
-            <div class="panel-subtitle">Computes real in-pocket return by deducting transport, tolls, market cess, and transit losses</div>
-          </div>
-          <span class="brand-badge" style="background: rgba(16,185,129,0.2); font-size: 12px;">Dynamic Cost Waterfall</span>
-        </div>
-
-        <div class="router-layout">
-          <!-- Form Inputs -->
-          <div class="calculator-card">
-            <form id="profit-optimizer-form">
-              <div class="form-group">
-                <label class="form-label" for="opt-crop">Select Commodity / Crop</label>
-                <select class="form-select" id="opt-crop">
-                  <option value="Onion">Onion (Red Nashik)</option>
-                  <option value="Soybean">Soybean (JS-335 Yellow)</option>
-                  <option value="Wheat">Wheat (Sharbati / Lokwan)</option>
-                  <option value="Tomato">Tomato (Hybrid)</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="opt-origin">Farm Location (Origin Coordinates)</label>
-                <select class="form-select" id="opt-origin">
-                  <option value='{"name":"Niphad, Nashik, MH","lat":20.0110,"lng":74.0520}'>Niphad, Nashik (Grape & Onion Hub)</option>
-                  <option value='{"name":"Chandwad, Nashik, MH","lat":20.0820,"lng":74.1200}'>Chandwad, Nashik</option>
-                  <option value='{"name":"Sinnar, Nashik, MH","lat":19.8900,"lng":74.2400}'>Sinnar, Nashik</option>
-                  <option value='{"name":"Indore Outskirts, MP","lat":22.7196,"lng":75.8577}'>Indore Outskirts, MP</option>
-                  <option value='{"name":"Surat Rural, GJ","lat":21.1702,"lng":72.8311}'>Surat Rural, GJ</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <div class="form-label">
-                  <span>Produce Quantity to Sell</span>
-                  <span class="form-val-badge" id="opt-quantity-val">150 Quintals (15.0 MT)</span>
+          
+          <!-- Mockup Layer -->
+          <div class="mockup-layer">
+            
+            <!-- Mockup 1: Net Profit Router -->
+            <div class="mockup-card mockup-1">
+              <div class="mockup-header"><i class="ph ph-map-pin"></i> Net Profit Route</div>
+              <div class="mockup-body">
+                <div class="form-group">
+                  <div class="form-label" style="font-size: 0.7rem; color: #4A5568;">Crop</div>
+                  <div style="padding: 6px; border: 1px solid #D1D5DB; border-radius: 4px;">Soybean</div>
                 </div>
-                <input type="range" class="range-slider" id="opt-quantity" min="20" max="400" step="10" value="150">
+                <div class="form-group">
+                  <div class="form-label" style="font-size: 0.7rem; color: #4A5568;">Quantity</div>
+                  <div style="padding: 6px; border: 1px solid #D1D5DB; border-radius: 4px;">150 Qtl</div>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; font-size: 0.75rem;">Calculate Route</button>
               </div>
+            </div>
 
+            <!-- Mockup 2: Mandi Ticker Table -->
+            <div class="mockup-card mockup-2">
+              <div class="mockup-header"><i class="ph ph-table"></i> Top Mandi Arrivals</div>
+              <div class="mockup-body" style="padding: 0;">
+                <table class="mockup-table">
+                  <tr><th>Mandi</th><th>Modal Price</th><th>Arrivals</th></tr>
+                  <tr><td>Lasalgaon</td><td>₹1,850</td><td>12,400 q</td></tr>
+                  <tr><td>Pune</td><td>₹2,100</td><td>8,200 q</td></tr>
+                  <tr><td>Nashik</td><td>₹1,950</td><td>9,100 q</td></tr>
+                  <tr><td>Vashi</td><td>₹2,300</td><td>15,000 q</td></tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- Mockup 3: AI CV Result -->
+            <div class="mockup-card mockup-3">
+              <div class="mockup-header"><i class="ph ph-microscope"></i> CV Grading Result</div>
+              <div class="mockup-body" style="text-align: center; padding: 24px;">
+                <div class="mockup-stat">96.2%</div>
+                <div style="font-size: 0.75rem; color: #4A5568; margin-bottom: 12px;">Confidence Score</div>
+                <span class="mockup-tag">AGMARK Grade A</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- STAT 1: Ink + Gold Accent -->
+      <section class="section-ink" style="padding: 80px 0; border-top: 1px solid #2A3431;">
+        <div class="container" style="text-align: center;">
+          <h2 class="serif-heading display-stat text-gold">+₹245/qtl</h2>
+          <p class="stat-caption text-dim-inverse" style="margin: 0 auto;">Average net profit premium identified over local farm-gate rates.</p>
+        </div>
+      </section>
+
+      <!-- STAT 2: Paper + Green Accent -->
+      <section class="section-paper" style="padding: 80px 0;">
+        <div class="container" style="text-align: center;">
+          <h2 class="serif-heading display-stat text-green">142 Farmers</h2>
+          <p class="stat-caption text-muted" style="margin: 0 auto;">Active members pooled into bulk FPO truckloads this month alone.</p>
+        </div>
+      </section>
+
+      <!-- TENANT MODULES: Case Studies Grid -->
+      <section class="section-paper" style="padding: 40px 0 120px 0;">
+        <div class="container">
+          <div class="tenant-modules-grid">
+            
+            <!-- Farmer -->
+            <div class="case-study-card" onclick="switchDashboard('farmer')" style="cursor: pointer;">
+              <div class="cs-content">
+                <div class="cs-eyebrow">Direct Farm Interface</div>
+                <h3 class="serif-heading cs-headline">Route crops for maximum net profit, not just gross price.</h3>
+              </div>
+              <div class="cs-visual">
+                <div class="cs-mockup-wrapper">
+                  <div class="mockup-stat">₹2,845 / Qtl</div>
+                  <div style="font-size: 0.75rem; color: #4A5568;">Total Net Profit (Vashi Mandi)</div>
+                  <div style="margin-top: 12px; height: 8px; background: #E5E7EB; border-radius: 4px; width: 80%;"></div>
+                  <div style="margin-top: 8px; height: 8px; background: #E5E7EB; border-radius: 4px; width: 60%;"></div>
+                </div>
+              </div>
+              <div class="cs-footer">
+                <i class="ph ph-tractor"></i>
+                <span>8 tracked mandis &middot; ₹70.3L buyer RFQs</span>
+              </div>
+            </div>
+
+            <!-- APMC -->
+            <div class="case-study-card" onclick="switchDashboard('apmc')" style="cursor: pointer;">
+              <div class="cs-content">
+                <div class="cs-eyebrow">State Regulatory Board</div>
+                <h3 class="serif-heading cs-headline">Macro oversight, statutory cess, and anomaly detection.</h3>
+              </div>
+              <div class="cs-visual">
+                <div class="cs-mockup-wrapper" style="transform: rotate(2deg);">
+                  <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+                    <i class="ph ph-warning text-danger"></i> <span style="font-weight: 600; font-size: 0.85rem;">Hoarding Alert</span>
+                  </div>
+                  <div style="font-size: 0.75rem; color: #4A5568;">High volatility variance detected in Nashik onion arrivals.</div>
+                  <div style="margin-top: 12px; height: 8px; background: #FECACA; border-radius: 4px; width: 90%;"></div>
+                </div>
+              </div>
+              <div class="cs-footer">
+                <i class="ph ph-bank"></i>
+                <span>305 mandis &middot; 36 districts</span>
+              </div>
+            </div>
+
+            <!-- FPO -->
+            <div class="case-study-card" onclick="switchDashboard('fpo')" style="cursor: pointer;">
+              <div class="cs-content">
+                <div class="cs-eyebrow">FPO Cooperative</div>
+                <h3 class="serif-heading cs-headline">Bulk truckload aggregation with transparent member ledgers.</h3>
+              </div>
+              <div class="cs-visual">
+                <div class="cs-mockup-wrapper" style="transform: rotate(-3deg);">
+                  <div class="mockup-stat">38.5%</div>
+                  <div style="font-size: 0.75rem; color: #4A5568;">Logistics savings via shared freight.</div>
+                  <div style="margin-top: 12px; height: 8px; background: #D1FAE5; border-radius: 4px; width: 70%;"></div>
+                </div>
+              </div>
+              <div class="cs-footer">
+                <i class="ph ph-users-three"></i>
+                <span>142 farmers &middot; 3 open pools</span>
+              </div>
+            </div>
+
+            <!-- Enterprise -->
+            <div class="case-study-card" onclick="switchDashboard('enterprise')" style="cursor: pointer;">
+              <div class="cs-content">
+                <div class="cs-eyebrow">Enterprise Procurement</div>
+                <h3 class="serif-heading cs-headline">Escrow-backed tenders and AI computer vision quality grading.</h3>
+              </div>
+              <div class="cs-visual">
+                <div class="cs-mockup-wrapper" style="transform: rotate(1deg);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; padding-bottom: 8px;">
+                    <span style="font-weight: 600; font-size: 0.85rem;">Escrow Deposit</span>
+                    <i class="ph ph-lock text-green"></i>
+                  </div>
+                  <div class="mockup-stat" style="margin-top: 8px; font-size: 1.25rem;">₹70,35,000</div>
+                  <div style="font-size: 0.75rem; color: #4A5568;">Guaranteed digital settlement.</div>
+                </div>
+              </div>
+              <div class="cs-footer">
+                <i class="ph ph-buildings"></i>
+                <span>₹70.35 Lakhs escrow &middot; 18 lots cleared</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==========================================
+         DASHBOARDS (INTERNAL UI)
+         ========================================== -->
+
+    <div class="container">
+      <!-- Farmer Dashboard -->
+      <div id="view-farmer" class="tenant-view">
+        <!-- Split Hero -->
+        <div class="farmer-hero">
+          <div class="farmer-hero-text">
+            <h2 class="farmer-display">Farmer Direct</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 400px; font-weight: 500;">Net profit calculator and direct institutional produce listings.</p>
+          </div>
+          <div class="farmer-hero-img"></div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="farmer-stat-grid">
+          <div class="farmer-stat-card">
+            <div class="farmer-stat-header"><span>Tracked APMC Mandis</span><i class="ph ph-map-pin farmer-stat-icon"></i></div>
+            <div class="farmer-stat-val">8</div>
+          </div>
+          <div class="farmer-stat-card">
+            <div class="farmer-stat-header"><span>Average Profit Premium</span><i class="ph ph-trend-up farmer-stat-icon"></i></div>
+            <div class="farmer-stat-val">₹245</div>
+          </div>
+          <div class="farmer-stat-card">
+            <div class="farmer-stat-header"><span>FPO Bulk Pooling</span><i class="ph ph-users farmer-stat-icon"></i></div>
+            <div class="farmer-stat-val">3</div>
+          </div>
+          <div class="farmer-stat-card">
+            <div class="farmer-stat-header"><span>Enterprise RFQs</span><i class="ph ph-file-text farmer-stat-icon"></i></div>
+            <div class="farmer-stat-val">₹70.3 L</div>
+          </div>
+        </div>
+
+        <!-- Router Panel -->
+        <div class="farmer-router-section">
+          <!-- Calculator Form -->
+          <form id="profit-optimizer-form" class="farmer-form">
+            <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--farmer-forest); margin-bottom: 24px;">Route Calculator</h3>
+            <div class="farmer-form-group">
+              <label class="farmer-form-label" for="opt-crop">COMMODITY</label>
+              <select class="farmer-input" id="opt-crop">
+                <option value="Onion">Onion</option>
+                <option value="Soybean">Soybean</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Tomato">Tomato</option>
+              </select>
+            </div>
+            <div class="farmer-form-group">
+              <label class="farmer-form-label" for="opt-origin">FARM LOCATION</label>
+              <select class="farmer-input" id="opt-origin">
+                <option value='{"name":"Niphad, Nashik, MH","lat":20.0110,"lng":74.0520}'>Niphad, Nashik</option>
+                <option value='{"name":"Indore Outskirts, MP","lat":22.7196,"lng":75.8577}'>Indore, MP</option>
+              </select>
+            </div>
+            <div class="farmer-form-group">
+              <label class="farmer-form-label">QUANTITY (QUINTALS)</label>
+              <input type="number" class="farmer-input" id="opt-quantity" value="150">
+            </div>
+            <button type="submit" class="farmer-btn">CALCULATE ROUTE</button>
+          </form>
+          
+          <!-- Results Area -->
+          <div>
+            <h3 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-main); margin-bottom: 24px;">Market Routing Results</h3>
+            <div id="mandi-comparison-tbody" class="farmer-results-list">
+              <!-- Data injected via JS -->
+              <div style="padding: 40px; text-align: center; color: var(--text-muted); border: 1px dashed var(--farmer-border); border-radius: 8px;">
+                Select your parameters and calculate the route to see ranked mandi options.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APMC Dashboard -->
+      <div id="view-apmc" class="tenant-view">
+        <div class="dashboard-header">
+          <h2 class="serif-heading">State APMC Regulatory Board</h2>
+          <p>Macro oversight, cess collections, and statutory ledger.</p>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-header"><span>Active Mandis</span><i class="ph ph-bank"></i></div>
+            <div class="stat-value">305</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header"><span>Daily Cess Collection</span><i class="ph ph-coins"></i></div>
+            <div class="stat-value text-success">₹34.82 L</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header"><span>Projected Monthly Revenue</span><i class="ph ph-chart-bar"></i></div>
+            <div class="stat-value">₹10.45 Cr</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header"><span>Anti-Hoarding Alerts</span><i class="ph ph-warning"></i></div>
+            <div class="stat-value text-danger">1</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title serif-heading">Mandi Arrivals & Statutory Cess Accrual</h3>
+          </div>
+          <div class="table-container">
+            <table class="mandi-table">
+              <thead>
+                <tr>
+                  <th>APMC Mandi</th>
+                  <th>Commodity</th>
+                  <th>Modal Price</th>
+                  <th>Daily Arrivals</th>
+                  <th>Cess Rate</th>
+                  <th>Estimated Daily Cess</th>
+                </tr>
+              </thead>
+              <tbody id="apmc-arrivals-tbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FPO Dashboard -->
+      <div id="view-fpo" class="tenant-view">
+        <div class="dashboard-header">
+          <h2 class="serif-heading">FPO Cooperative</h2>
+          <p>Bulk truckload aggregation and transparent member ledgers.</p>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-header"><span>Total Members</span><i class="ph ph-users"></i></div>
+            <div class="stat-value">142</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header"><span>Active Bulk Pools</span><i class="ph ph-truck"></i></div>
+            <div class="stat-value">3</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header"><span>Logistics Savings</span><i class="ph ph-currency-inr"></i></div>
+            <div class="stat-value text-success">38.5%</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title serif-heading">Isolated Member Ledger</h3>
+          </div>
+          <div class="table-container">
+            <table class="mandi-table">
+              <thead>
+                <tr>
+                  <th>Member Farmer</th>
+                  <th>Landholding</th>
+                  <th>Quantity Pooled</th>
+                  <th>Moisture %</th>
+                  <th>Final Net Payout</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="fpo-ledger-tbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enterprise Dashboard -->
+      <div id="view-enterprise" class="tenant-view">
+        <div class="dashboard-header">
+          <h2 class="serif-heading">Enterprise Procurement</h2>
+          <p>Direct farm-gate purchasing and CV quality grading.</p>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-header"><span>Active RFQs</span><i class="ph ph-file-text"></i></div>
+            <div class="stat-value">3</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header"><span>Total Escrow Deposited</span><i class="ph ph-lock"></i></div>
+            <div class="stat-value text-success">₹70.35 L</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header"><span>AI Certified Lots</span><i class="ph ph-check-circle"></i></div>
+            <div class="stat-value">18</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title serif-heading">AI Computer Vision Quality Grading</h3>
+          </div>
+          <div class="ai-grader-grid" style="display: grid; grid-template-columns: 350px 1fr; gap: 24px;">
+            <div style="background: var(--bg-surface); padding: 24px; border: 1px solid var(--border-subtle); border-radius: var(--radius);">
               <div class="form-group">
-                <label class="form-label" for="opt-vehicle">Haulage Vehicle Type</label>
-                <select class="form-select" id="opt-vehicle">
-                  <option value="canter_5t" selected>Eicher 6-Wheeler (5-6 MT Capacity)</option>
-                  <option value="pickup_1.5t">Mahindra Bolero Pickup (1.5-2 MT)</option>
-                  <option value="heavy_16t">Multi-Axle Truck (16-20 MT / FPO Bulk Pool)</option>
+                <label class="form-label">Select Grain Sample</label>
+                <select class="form-select" id="ai-sample-select">
+                  <option value="wheat">Sharbati Wheat</option>
+                  <option value="soybean">JS-335 Soybean</option>
+                  <option value="onion">Red Onion</option>
                 </select>
               </div>
-
-              <div class="form-group">
-                <div class="form-label">
-                  <span>Current Diesel Fuel Price</span>
-                  <span class="form-val-badge" id="opt-diesel-val">₹92.5 / Liter</span>
-                </div>
-                <input type="range" class="range-slider" id="opt-diesel" min="80" max="110" step="0.5" value="92.5">
-              </div>
-
-              <button type="submit" class="btn btn-primary" id="opt-submit-btn" style="width: 100%; margin-top: 10px; padding: 12px;">
-                <span>⚡ Calculate Net Profit Route</span>
-              </button>
-            </form>
-          </div>
-
-          <!-- Dynamic Output Section -->
-          <div>
-            <!-- Comparison Hero Cards -->
-            <div class="profit-hero-cards">
-              <div class="profit-card-highlight winner-card" id="winner-card-container">
-                <!-- Injected via JavaScript -->
-              </div>
-              <div class="profit-card-highlight deceptive-card" id="deceptive-card-container">
-                <!-- Injected via JavaScript -->
-              </div>
+              <button class="btn btn-primary" id="ai-scan-btn" onclick="runAiCropScan()" style="width: 100%;">Execute AI Inspection</button>
             </div>
-
-            <!-- Waterfall Cost Breakdown -->
-            <div class="waterfall-box">
-              <h4 style="font-size: 14px; font-weight: 700; color: #fff;">
-                📊 Cost Waterfall Breakdown (Where Does The Money Go?)
-              </h4>
-              <div id="waterfall-content">
-                <!-- Injected via JavaScript -->
-              </div>
-            </div>
-
-            <!-- Mandi Comparison Matrix Table -->
-            <div class="table-container">
-              <table class="mandi-table">
-                <thead>
-                  <tr>
-                    <th>APMC Mandi</th>
-                    <th>Distance & Transit</th>
-                    <th>Gross Listed</th>
-                    <th>Total Deductions</th>
-                    <th>Total Net Profit</th>
-                    <th>Net Rate / Qtl</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="mandi-comparison-tbody">
-                  <!-- Injected via JavaScript -->
-                </tbody>
-              </table>
-            </div>
-
-            <!-- 7-Day AI-Powered Price Forecast Widget (Beta) -->
-            <div class="forecast-chart-container">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h4 style="font-size: 14px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
-                  <span>📈</span> 7-Day Price Forecast & Arrival Elasticity (Beta)
-                </h4>
-                <span style="font-size: 11px; color: var(--text-muted);">ARIMA + Market Volatility Predictor</span>
-              </div>
-              <div id="price-forecast-container">
-                <!-- Injected via JavaScript -->
-              </div>
+            <div id="ai-result-card" style="border: 1px solid var(--border-subtle); background: #F9FAFB; padding: 24px; border-radius: var(--radius); text-align: center;">
+              <i class="ph ph-microscope" style="font-size: 32px; color: var(--text-muted); margin-bottom: 8px;"></i>
+              <p>Ready for inspection. Click execute.</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Farmer Crop Listings & Pooling Section -->
-      <div class="panel">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">🌾 My Farm Produce Listings</h3>
-            <div class="panel-subtitle">Publish crop offerings for FPO bulk pooling or direct enterprise bids</div>
-          </div>
-          <button class="btn btn-primary" onclick="document.getElementById('farmer-listing-modal').classList.add('open')">
-            + List New Produce
-          </button>
-        </div>
-        <div class="stat-grid" id="farmer-listings-grid">
-          <!-- Injected via JavaScript -->
         </div>
       </div>
     </div>
-
-
-    <!-- =========================================================================
-         VIEW 2: STATE APMC BOARD VIEW (WHITE-LABELED REGULATORY OVERSIGHT)
-         ========================================================================= -->
-    <div class="tenant-view" id="view-apmc">
-      <!-- Banner -->
-      <div class="view-header-banner apmc-theme">
-        <div class="view-title-wrap">
-          <h2>
-            <span>🏛️</span> Maharashtra State APMC Regulatory Command Center
-          </h2>
-          <p>White-labeled state marketing board portal: Macro mandi surveillance, cess collections, anti-hoarding alerts, and statutory arbitration.</p>
+    
+    <!-- Audit Modal View -->
+    <div class="modal-overlay" id="audit-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="serif-heading">Data Isolation Inspector</h3>
+          <button class="modal-close" onclick="document.getElementById('audit-modal').classList.remove('open')"><i class="ph ph-x"></i></button>
         </div>
-        <div class="tenant-meta-badge">
-          <div class="tenant-security-tag" style="background: rgba(14,165,233,0.15); color: #38bdf8; border-color: rgba(14,165,233,0.3);">
-            <span>🛡️ Regulatory Ledger</span>
-          </div>
-          <span class="tenant-id-label">TEN-APMC-MH01 (State Board)</span>
-        </div>
-      </div>
-
-      <!-- APMC Macro Stat Grid -->
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Statewide Active Mandis</span>
-            <div class="stat-icon">🏢</div>
-          </div>
-          <div class="stat-value" id="apmc-stat-mandis">305 Active</div>
-          <div class="stat-sub">Across 36 Districts</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Daily Cess Collection (1.0 - 2.0%)</span>
-            <div class="stat-icon">💰</div>
-          </div>
-          <div class="stat-value" id="apmc-stat-cess-daily">₹34.82 Lakhs</div>
-          <div class="stat-sub positive">Accrued Today to State Pool</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Projected Monthly Revenue</span>
-            <div class="stat-icon">📊</div>
-          </div>
-          <div class="stat-value" id="apmc-stat-cess-monthly">₹10.45 Cr</div>
-          <div class="stat-sub">Mandatory APMC Development Fund</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Anti-Hoarding Price Alerts</span>
-            <div class="stat-icon">🚨</div>
-          </div>
-          <div class="stat-value" id="apmc-stat-anomalies" style="color: #f87171;">1 Flagged</div>
-          <div class="stat-sub negative">High Volatility Variance</div>
-        </div>
-      </div>
-
-      <!-- Anomaly Radar & Inter-mandi Trade Flow -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px;">
-        <!-- Anomaly Card -->
-        <div class="panel" style="margin-bottom: 0;">
-          <div class="panel-header">
-            <h3 class="panel-title">🚨 Price Volatility & Hoarding Radar</h3>
-            <span class="brand-badge" style="background: rgba(239,68,68,0.2); color: #f87171;">Automated Heuristics</span>
-          </div>
-          <div id="apmc-anomalies-list">
-            <!-- Injected via JavaScript -->
-          </div>
-        </div>
-
-        <!-- Trade Flow Radar -->
-        <div class="panel" style="margin-bottom: 0;">
-          <div class="panel-header">
-            <h3 class="panel-title">🚛 Inter-Mandi Commodity Trade Flows</h3>
-            <span class="brand-badge" style="background: rgba(14,165,233,0.2); color: #38bdf8;">e-Way Bill Tracking</span>
-          </div>
-          <div id="apmc-trade-flow-list">
-            <!-- Injected via JavaScript -->
-          </div>
-        </div>
-      </div>
-
-      <!-- Govt Analyst Statewide Mandi Arrival & Price Volatility Heatmap -->
-      <div class="panel">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">🗺️ Govt Analyst Statewide Mandi Arrival & Price Volatility Heatmap</h3>
-            <div class="panel-subtitle">Geospatial surveillance across Maharashtra districts (Leaflet.js B2G Layer with live arrivals & cess density)</div>
-          </div>
-          <span class="brand-badge" style="background: rgba(14,165,233,0.2); color: #38bdf8;">B2G Macro Surveillance</span>
-        </div>
-        <div id="apmc-leaflet-map"></div>
-      </div>
-
-      <!-- Statewide Top Arrivals & Cess Table -->
-      <div class="panel">
-        <div class="panel-header">
-          <h3 class="panel-title">📈 Top Mandi Arrivals & Statutory Cess Accrual</h3>
-          <span class="brand-badge" style="background: rgba(16,185,129,0.2); color: #34d399;">Daily Reconciled</span>
-        </div>
-        <div class="table-container">
-          <table class="mandi-table">
-            <thead>
-              <tr>
-                <th>APMC Mandi</th>
-                <th>Dominant Commodity</th>
-                <th>Modal Price</th>
-                <th>Daily Arrivals</th>
-                <th>Cess Rate</th>
-                <th>Estimated Daily Cess</th>
-              </tr>
-            </thead>
-            <tbody id="apmc-arrivals-tbody">
-              <!-- Injected via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Grievance Redressal & Disputes -->
-      <div class="panel">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">⚖️ APMC Statutory Grievance & Dispute Redressal Ledger</h3>
-            <div class="panel-subtitle">Enforcing statutory 24-hr payment windows, arhtiya commission ceilings, and weighbridge accuracy</div>
-          </div>
-          <button class="btn btn-primary" onclick="document.getElementById('apmc-dispute-modal').classList.add('open')">
-            + Lodge Formal Dispute
-          </button>
-        </div>
-        <div class="table-container">
-          <table class="mandi-table">
-            <thead>
-              <tr>
-                <th>Dispute ID</th>
-                <th>Complainant</th>
-                <th>Respondent / Agent</th>
-                <th>Allegation / Issue</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="apmc-disputes-tbody">
-              <!-- Injected via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- =========================================================================
-         VIEW 3: FPO COOPERATIVE VIEW (BULK POOLING + MEMBER LEDGER)
-         ========================================================================= -->
-    <div class="tenant-view" id="view-fpo">
-      <!-- Banner -->
-      <div class="view-header-banner fpo-theme">
-        <div class="view-title-wrap">
-          <h2>
-            <span>🤝</span> Sahyadri Farmers Producer Company (FPO Engine)
-          </h2>
-          <p>Collective bargaining aggregator: Pool smallholder harvests into 16-ton truckloads to unlock institutional enterprise contracts.</p>
-        </div>
-        <div class="tenant-meta-badge">
-          <div class="tenant-security-tag" style="background: rgba(16,185,129,0.15); color: #34d399; border-color: rgba(16,185,129,0.3);">
-            <span>🛡️ Isolated Member Ledger</span>
-          </div>
-          <span class="tenant-id-label">TEN-FPO-774 (Sahyadri Coop)</span>
-        </div>
-      </div>
-
-      <!-- FPO Stat Grid -->
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Total Member Farmers</span>
-            <div class="stat-icon">👨‍🌾</div>
-          </div>
-          <div class="stat-value">142 Farmers</div>
-          <div class="stat-sub positive">+18 Joined this Month</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Active Bulk Pooling Lots</span>
-            <div class="stat-icon">🚛</div>
-          </div>
-          <div class="stat-value">3 Pools Open</div>
-          <div class="stat-sub">Onion, Soybean, Wheat</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Collective Bargaining Premium</span>
-            <div class="stat-icon">💎</div>
-          </div>
-          <div class="stat-value">+11.4% Rate</div>
-          <div class="stat-sub positive">Above Standard Mandi Spot Prices</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Shared Logistics Savings</span>
-            <div class="stat-icon">⚡</div>
-          </div>
-          <div class="stat-value">38.5% Saved</div>
-          <div class="stat-sub positive">Reduced Freight per Quintal</div>
-        </div>
-      </div>
-
-      <!-- Bulk Truckload Pooling Grid -->
-      <div class="panel">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">📦 Active Bulk Truckload Aggregations</h3>
-            <div class="panel-subtitle">Pooling small individual lots into full multi-axle truck capacity to negotiate directly with buyers</div>
-          </div>
-          <button class="btn btn-secondary" onclick="showToast('New pooling lot template created', 'info')">
-            + Create New Pool
-          </button>
-        </div>
-        <div class="stat-grid" id="fpo-pools-grid">
-          <!-- Injected via JavaScript -->
-        </div>
-      </div>
-
-      <!-- Transparent Isolated Member Ledger -->
-      <div class="panel">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">📑 FPO Transparent Member Ledger (Strictly Tenant Isolated)</h3>
-            <div class="panel-subtitle" id="fpo-isolation-proof-text">Row-Level Security Protected: Invisible to Enterprise Buyers and Outside Traders</div>
-          </div>
-          <span class="brand-badge" style="background: rgba(16,185,129,0.2); color: #34d399;">
-            🔒 RLS Partition Active
-          </span>
-        </div>
-        <div class="table-container">
-          <table class="mandi-table">
-            <thead>
-              <tr>
-                <th>Member Farmer</th>
-                <th>Landholding</th>
-                <th>Quantity Pooled</th>
-                <th>Moisture %</th>
-                <th>Quality Grade</th>
-                <th>Advance Disbursed</th>
-                <th>Final Net Payout</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="fpo-ledger-tbody">
-              <!-- Injected via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- =========================================================================
-         VIEW 4: ENTERPRISE BUYER VIEW (BIDDING + AI QUALITY GRADING)
-         ========================================================================= -->
-    <div class="tenant-view" id="view-enterprise">
-      <!-- Banner -->
-      <div class="view-header-banner enterprise-theme">
-        <div class="view-title-wrap">
-          <h2>
-            <span>🏢</span> ITC Agri-Business Institutional Procurement Gateway
-          </h2>
-          <p>Direct farm-gate institutional purchasing: Reverse auction tenders, automated escrow funds release, and Computer Vision crop quality inspection.</p>
-        </div>
-        <div class="tenant-meta-badge">
-          <div class="tenant-security-tag" style="background: rgba(245,158,11,0.15); color: #fbbf24; border-color: rgba(245,158,11,0.3);">
-            <span>🛡️ Institutional Escrow Gateway</span>
-          </div>
-          <span class="tenant-id-label">TEN-ENT-902 (ITC Agri-Procure)</span>
-        </div>
-      </div>
-
-      <!-- Enterprise Stat Grid -->
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Active Procurement RFQs</span>
-            <div class="stat-icon">📄</div>
-          </div>
-          <div class="stat-value">3 Tenders Open</div>
-          <div class="stat-sub">Wheat, Soybean, Onion</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Total Escrow Deposited</span>
-            <div class="stat-icon">🔒</div>
-          </div>
-          <div class="stat-value" style="color: #34d399;">₹70.35 Lakhs</div>
-          <div class="stat-sub positive">Guaranteed Digital Settlement</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">AI Quality Certified Lots</span>
-            <div class="stat-icon">🔬</div>
-          </div>
-          <div class="stat-value">18 Lots Cleared</div>
-          <div class="stat-sub positive">Avg 96.2% Confidence</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-title">Dockage / Rejection Rate</span>
-            <div class="stat-icon">📉</div>
-          </div>
-          <div class="stat-value">1.2%</div>
-          <div class="stat-sub positive">Target: &lt; 2.5%</div>
-        </div>
-      </div>
-
-      <!-- AI COMPUTER VISION CROP QUALITY GRADING SIMULATOR -->
-      <div class="panel" id="ai-grader-panel" style="border: 1.5px solid rgba(245,158,11,0.4); box-shadow: 0 0 25px rgba(245,158,11,0.12);">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">
-              <span>🔬</span> AI Computer Vision Crop Quality Grading Simulator
-            </h3>
-            <div class="panel-subtitle">Upload grain photos or select sample crop textures to analyze luster, broken grain %, foreign matter, and assign AGMARK grades</div>
-          </div>
-          <span class="brand-badge" style="background: rgba(245,158,11,0.2); color: #fbbf24;">
-            AI CV Engine v2.4 (PIL / NumPy)
-          </span>
-        </div>
-
-        <div class="ai-grader-grid">
-          <!-- Upload & Scan Controls -->
-          <div class="calculator-card">
-            <!-- Animated Scanner Viewport -->
-            <div class="scanner-viewport" id="scanner-viewport">
-              <img src="/static/assets/samples/wheat_sample.jpg" id="ai-preview-img" class="scanner-preview-img" alt="Crop Texture Preview">
-              <div class="scanning-grid-overlay"></div>
-              <div class="scanner-beam"></div>
-            </div>
-
-            <div style="margin-top: 14px;">
-              <label class="form-label">
-                <span>Select Test Preset Grain Sample:</span>
-              </label>
-              <div class="sample-chips">
-                <button type="button" class="chip-btn ai-sample-chip active" data-crop="wheat">🌾 Sharbati Wheat</button>
-                <button type="button" class="chip-btn ai-sample-chip" data-crop="soybean">🌱 JS-335 Soybean</button>
-                <button type="button" class="chip-btn ai-sample-chip" data-crop="onion">🧅 Red Onion</button>
-                <button type="button" class="chip-btn ai-sample-chip" data-crop="tomato">🍅 Hybrid Tomato</button>
-              </div>
-            </div>
-
-            <div style="margin: 14px 0;">
-              <label class="form-label" for="ai-file-input">Or Upload Crop Grain Image:</label>
-              <input type="file" id="ai-file-input" class="form-input" accept="image/*" style="font-size: 11.5px; padding: 6px;">
-            </div>
-
-            <button type="button" class="btn btn-primary" id="ai-scan-btn" onclick="runAiCropScan()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none;">
-              <span>🔬 Execute AI Computer Vision Inspection</span>
-            </button>
-          </div>
-
-          <!-- Live Result Card -->
-          <div class="ai-certificate-card" id="ai-result-card">
-            <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-              <div style="font-size: 36px; margin-bottom: 10px;">🔬</div>
-              <h4 style="font-size: 16px; color: #fff; font-weight: 600;">Ready for Automated Quality Grading</h4>
-              <p style="font-size: 13px; max-width: 380px; margin: 6px auto;">Click "Execute AI Computer Vision Inspection" to analyze grain uniformity, luster, moisture approximation, and generate a tamper-proof AGMARK certificate.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Institutional Procurement RFQs & Escrow Releases -->
-      <div class="panel">
-        <div class="panel-header">
-          <div>
-            <h3 class="panel-title">📋 Institutional Procurement Tenders & Milestone Escrows</h3>
-            <div class="panel-subtitle">Contracts backed by escrow deposits with automated release on AI certification</div>
-          </div>
-          <button class="btn btn-primary" onclick="document.getElementById('enterprise-rfq-modal').classList.add('open')">
-            + Post New Buyer Tender RFQ
-          </button>
-        </div>
-        <div id="enterprise-rfqs-container">
-          <!-- Injected via JavaScript -->
+        <div class="sql-log" id="audit-sql-log">
+          SELECT * FROM logs;
         </div>
       </div>
     </div>
 
   </main>
 
-  <!-- ==================== MODALS ==================== -->
-
-  <!-- 1. MULTI-TENANT ISOLATION INSPECTOR MODAL (FOR JUDGES) -->
-  <div class="modal-overlay" id="audit-modal">
-    <div class="modal-card" style="max-width: 860px;">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 24px;">🛡️</span>
-          <div>
-            <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Multi-Tenant Data Isolation Audit Inspector</h3>
-            <div style="font-size: 12px; color: var(--text-muted);">Live cryptographic verification of Row-Level Security (RLS) for SIH 2026 Judges</div>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeModal('audit-modal')">&times;</button>
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: var(--radius-md); padding: 14px; margin-bottom: 16px;">
-          <h4 style="font-size: 13.5px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">Why Multi-Tenancy Isolation Matters for PS-132:</h4>
-          <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6;">
-            In a shared marketplace SaaS, <strong>FPO private member payouts</strong> and <strong>Enterprise procurement bid margins</strong> must NEVER leak across tenant boundaries. Agri-Connect enforces database row-level parameterization (<code style="color: #34d399;">WHERE tenant_id = :authenticated_tenant</code>) on every transaction.
-          </p>
-        </div>
-
-        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px;">
-          <button class="btn btn-primary" onclick="testCrossTenantIsolation()" style="background: linear-gradient(135deg, #ef4444, #dc2626); border: none;">
-            🚨 Simulate Cross-Tenant Data Leak Attack (Probe FPO Ledger from Enterprise Buyer)
-          </button>
-          <button class="btn btn-secondary" onclick="refreshAuditLogs()">
-            🔄 Refresh SQL Audit Stream
-          </button>
-        </div>
-
-        <div id="isolation-test-result" style="display: none; margin-bottom: 16px;">
-          <!-- Injected via JavaScript -->
-        </div>
-
-        <h4 style="font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 8px;">Live Database Transaction & Query Audit Trail:</h4>
-        <div class="table-container" style="max-height: 280px; overflow-y: auto;">
-          <table class="mandi-table" style="font-size: 12px;">
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Tenant ID</th>
-                <th>Action</th>
-                <th>Parameterized SQL Query Executed</th>
-                <th>Security Verdict</th>
-              </tr>
-            </thead>
-            <tbody id="audit-logs-tbody">
-              <!-- Injected via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: flex-end;">
-        <button class="btn btn-secondary" onclick="closeModal('audit-modal')">Close Inspector</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. MANDI GATE TOKEN / PASS MODAL -->
-  <div class="modal-overlay" id="gate-pass-modal">
-    <div class="modal-card" style="max-width: 540px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Priority APMC Mandi Pass</h3>
-        <button class="modal-close" onclick="closeModal('gate-pass-modal')">&times;</button>
-      </div>
-      <div id="gate-pass-content">
-        <!-- Injected via JavaScript -->
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. ADD FPO MEMBER LOT MODAL -->
-  <div class="modal-overlay" id="fpo-add-member-modal">
-    <div class="modal-card" style="max-width: 520px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Pool Member Produce</h3>
-        <button class="modal-close" onclick="closeModal('fpo-add-member-modal')">&times;</button>
-      </div>
-      <form id="fpo-add-member-form">
-        <input type="hidden" id="fpo-lot-pool-id">
-        <div style="font-size: 12.5px; color: #34d399; margin-bottom: 14px;" id="fpo-modal-pool-name"></div>
-
-        <div class="form-group">
-          <label class="form-label" for="fpo-farmer-name">Farmer Member Name</label>
-          <input type="text" id="fpo-farmer-name" class="form-input" required placeholder="e.g. Dnyaneshwar Shinde">
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="fpo-land-acres">Landholding (Acres)</label>
-            <input type="number" id="fpo-land-acres" class="form-input" required step="0.5" value="4.0">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="fpo-lot-qty">Quantity (Quintals)</label>
-            <input type="number" id="fpo-lot-qty" class="form-input" required step="1" value="35">
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="fpo-moisture">Moisture Content %</label>
-            <input type="number" id="fpo-moisture" class="form-input" required step="0.1" value="11.2">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="fpo-grade">Quality Grade</label>
-            <select id="fpo-grade" class="form-select">
-              <option value="Grade A">Grade A (Premium)</option>
-              <option value="Grade B">Grade B (Standard)</option>
-              <option value="Grade C">Grade C (FAQ)</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="fpo-advance">Advance Payment Disbursed (₹)</label>
-          <input type="number" id="fpo-advance" class="form-input" value="25000">
-        </div>
-
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('fpo-add-member-modal')">Cancel</button>
-          <button type="submit" class="btn btn-primary">Pool Member Lot</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 4. APMC DISPUTE MODAL -->
-  <div class="modal-overlay" id="apmc-dispute-modal">
-    <div class="modal-card" style="max-width: 560px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Lodge Statutory APMC Grievance</h3>
-        <button class="modal-close" onclick="closeModal('apmc-dispute-modal')">&times;</button>
-      </div>
-      <form id="apmc-dispute-form">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="disp-complainant">Complainant Name</label>
-            <input type="text" id="disp-complainant" class="form-input" required placeholder="Farmer / FPO Name">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="disp-role">Complainant Role</label>
-            <select id="disp-role" class="form-select">
-              <option value="Farmer">Individual Farmer</option>
-              <option value="FPO">FPO Cooperative</option>
-              <option value="Trader">Mandi Trader</option>
-            </select>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="disp-respondent">Respondent (Trader / Arhtiya)</label>
-            <input type="text" id="disp-respondent" class="form-input" required placeholder="Trader or Commission Agent">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="disp-mandi">Jurisdiction Mandi</label>
-            <select id="disp-mandi" class="form-select">
-              <option value="MANDI-VAS-02">Vashi APMC Navi Mumbai</option>
-              <option value="MANDI-NAS-01">Lasalgaon APMC</option>
-              <option value="MANDI-PUN-03">Pune Gultekdi APMC</option>
-              <option value="MANDI-SOL-04">Solapur APMC</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="disp-issue">Allegation / Infraction Details</label>
-          <textarea id="disp-issue" class="form-input" rows="3" required placeholder="e.g. Delayed payment beyond statutory 24-hr electronic transfer window under APMC Act"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="disp-amount">Claim Disputed Amount (₹)</label>
-          <input type="number" id="disp-amount" class="form-input" required value="75000">
-        </div>
-
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('apmc-dispute-modal')">Cancel</button>
-          <button type="submit" class="btn btn-primary">File Formal Dispute</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 5. ENTERPRISE RFQ MODAL -->
-  <div class="modal-overlay" id="enterprise-rfq-modal">
-    <div class="modal-card" style="max-width: 540px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Post Enterprise Procurement Tender (RFQ)</h3>
-        <button class="modal-close" onclick="closeModal('enterprise-rfq-modal')">&times;</button>
-      </div>
-      <form id="enterprise-rfq-form">
-        <div class="form-group">
-          <label class="form-label" for="rfq-buyer-org">Procuring Enterprise</label>
-          <input type="text" id="rfq-buyer-org" class="form-input" required value="ITC Agri-Business Division">
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="rfq-crop-name">Crop / Commodity</label>
-            <select id="rfq-crop-name" class="form-select">
-              <option value="Wheat">Wheat</option>
-              <option value="Soybean">Soybean</option>
-              <option value="Onion">Onion</option>
-              <option value="Tomato">Tomato</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="rfq-variety">Variety</label>
-            <input type="text" id="rfq-variety" class="form-input" value="Sharbati Premium">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="rfq-qty">Required Quantity (Quintals)</label>
-            <input type="number" id="rfq-qty" class="form-input" required value="500">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="rfq-target-price">Target Price (₹ / Qtl)</label>
-            <input type="number" id="rfq-target-price" class="form-input" required value="3350">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="rfq-spec">Quality Specifications</label>
-          <input type="text" id="rfq-spec" class="form-input" value="AGMARK Grade A, Max Moisture 11%, Broken < 2%">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="rfq-location">Delivery Processing Hub</label>
-          <input type="text" id="rfq-location" class="form-input" value="ITC Food Processing Hub, Ranjangaon, MH">
-        </div>
-
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('enterprise-rfq-modal')">Cancel</button>
-          <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none;">
-            Deposit Escrow & Publish Tender
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 6. FARMER PRODUCE LISTING MODAL -->
-  <div class="modal-overlay" id="farmer-listing-modal">
-    <div class="modal-card" style="max-width: 540px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">List Farm Produce For Sale</h3>
-        <button class="modal-close" onclick="closeModal('farmer-listing-modal')">&times;</button>
-      </div>
-      <form id="farmer-listing-form">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="lst-farmer-name">Farmer Full Name</label>
-            <input type="text" id="lst-farmer-name" class="form-input" required placeholder="e.g. Tukaram Patil">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lst-phone">Contact Mobile</label>
-            <input type="tel" id="lst-phone" class="form-input" required placeholder="98XXXXXXXX">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="lst-crop">Crop</label>
-            <select id="lst-crop" class="form-select">
-              <option value="Soybean">Soybean</option>
-              <option value="Onion">Onion</option>
-              <option value="Wheat">Wheat</option>
-              <option value="Tomato">Tomato</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lst-variety">Variety</label>
-            <input type="text" id="lst-variety" class="form-input" value="JS-335 Yellow">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="lst-qty">Estimated Quantity (Quintals)</label>
-            <input type="number" id="lst-qty" class="form-input" required value="120">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lst-msp">Govt Base MSP (₹ / Qtl)</label>
-            <input type="number" id="lst-msp" class="form-input" value="4892">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="lst-location">Village / Tehsil Location</label>
-            <input type="text" id="lst-location" class="form-input" value="Niphad, Nashik, Maharashtra">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lst-pincode">Pincode</label>
-            <input type="text" id="lst-pincode" class="form-input" value="422303">
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('farmer-listing-modal')">Cancel</button>
-          <button type="submit" class="btn btn-primary">Publish Produce Listing</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 7. TRUST SCORE & CREDIT MODAL -->
-  <div class="modal-overlay" id="trust-score-modal">
-    <div class="modal-card" style="max-width: 500px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">🛡️ Kisan Trust & Micro-Credit Ledger</h3>
-        <button class="modal-close" onclick="closeModal('trust-score-modal')">&times;</button>
-      </div>
-      <div id="trust-score-content">
-        <!-- Injected via JavaScript -->
-      </div>
-    </div>
-  </div>
-
-  <!-- 8. FARM-TO-FORK TRACEABILITY MODAL -->
-  <div class="modal-overlay" id="traceability-modal">
-    <div class="modal-card" style="max-width: 500px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">📦 Provenance & Traceability Passport</h3>
-        <button class="modal-close" onclick="closeModal('traceability-modal')">&times;</button>
-      </div>
-      <div id="traceability-content">
-        <!-- Injected via JavaScript -->
-      </div>
-    </div>
-  </div>
-
-  <!-- 9. SMS & USSD RURAL FALLBACK MODAL -->
-  <div class="modal-overlay" id="sms-modal">
-    <div class="modal-card" style="max-width: 480px;">
-      <div class="modal-header">
-        <h3 style="font-size: 18px; font-weight: 700; color: #fff;">📱 Bharat Agri USSD & SMS Gateway</h3>
-        <button class="modal-close" onclick="closeModal('sms-modal')">&times;</button>
-      </div>
-      <div id="sms-modal-content">
-        <!-- Injected via JavaScript -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toast-container"></div>
-
-  <!-- Application Scripts -->
+  <!-- JS Dependencies -->
   <script src="/static/js/app.js"></script>
   <script src="/static/js/net_profit.js"></script>
+  <script src="/static/js/tenant_farmer.js"></script>
   <script src="/static/js/tenant_apmc.js"></script>
   <script src="/static/js/tenant_fpo.js"></script>
   <script src="/static/js/tenant_enterprise.js"></script>
-  <script src="/static/js/tenant_farmer.js"></script>
   <script src="/static/js/audit_inspector.js"></script>
+  
+  <script>
+    // Simple UI routing logic
+    function switchDashboard(viewId) {
+      if(viewId === 'landing') {
+        document.getElementById('tenant-switcher').value = 'landing';
+      }
+      document.querySelectorAll('.tenant-view').forEach(el => el.classList.remove('active'));
+      document.getElementById('view-' + viewId).classList.add('active');
+      window.scrollTo(0,0);
+    }
+    
+    function handleToolsSelect(value) {
+      if (value === 'audit') {
+        document.getElementById('audit-modal').classList.add('open');
+      } else if (value !== '') {
+        alert("This tool module (" + value + ") is a placeholder in this prototype.");
+      }
+      document.getElementById('tools-select').value = ''; // reset
+    }
+  </script>
 </body>
 </html>

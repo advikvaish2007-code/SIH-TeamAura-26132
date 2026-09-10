@@ -35,7 +35,7 @@ function renderFarmerListings(listings) {
             ${l.id}
           </span>
           <h4 style="font-size: 16px; font-weight: 700; color: #fff; margin-top: 4px;">${l.crop_name} (${l.variety})</h4>
-          <div style="font-size: 12px; color: var(--text-muted);">Farmer: <strong>${l.farmer_name}</strong> • ${l.farm_location}</div>
+          <div style="font-size: 12px; color: var(--text-muted);">Farmer: <strong>${l.farmer_name}</strong>  ${l.farm_location}</div>
         </div>
         <span class="brand-badge" style="background: rgba(22,163,74,0.2); color: #4ade80;">
           ${l.status}
@@ -49,7 +49,7 @@ function renderFarmerListings(listings) {
         </div>
         <div>
           <span style="color: var(--text-dim); font-size: 11px; display: block;">Govt MSP Base</span>
-          <strong style="color: #38bdf8; font-size: 14px;">₹${l.base_msp.toLocaleString()}/qtl</strong>
+          <strong style="color: #38bdf8; font-size: 14px;">${l.base_msp.toLocaleString()}/qtl</strong>
         </div>
       </div>
 
