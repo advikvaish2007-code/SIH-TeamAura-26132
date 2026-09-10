@@ -30,7 +30,7 @@
   --shadow-md: 0 4px 6px -1px rgba(28, 35, 33, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(28, 35, 33, 0.15), 0 4px 6px -4px rgba(28, 35, 33, 0.1);
   --shadow-mockup: 0 20px 40px -10px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05);
-  --transition-fast: 150ms ease;
+  --transition-fast: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -197,7 +197,7 @@ h1, h2, h3, h4, h5, h6, .serif-heading {
   overflow: hidden;
   color: var(--text-main);
   opacity: 0;
-  animation: settleIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: settleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   /* target-rot is used by the animation keyframe */
 }
 
@@ -353,7 +353,7 @@ h1, h2, h3, h4, h5, h6, .serif-heading {
 .tenant-view {
   display: none;
   padding: 32px 0;
-  animation: fadeIn 0.3s ease forwards;
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .tenant-view.active {
   display: block;
@@ -529,58 +529,21 @@ h1, h2, h3, h4, h5, h6, .serif-heading {
   background-color: var(--farmer-cream);
 }
 
-/* Hero / Header Split */
-.farmer-hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 400px;
-  background: var(--farmer-forest);
-}
-
-.farmer-hero-text {
-  padding: 80px 48px;
-  background: linear-gradient(135deg, var(--farmer-forest) 0%, var(--farmer-olive) 100%);
-  color: var(--farmer-cream);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+/* Farmer Photographic Header */
+.farmer-top-section {
   position: relative;
-  overflow: hidden;
+  margin-bottom: 48px;
+  background: linear-gradient(180deg, rgba(250,247,240,0.94) 0%, rgba(250,247,240,0.85) 100%), url('../assets/farmer-field.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  border-radius: 0;
+  box-shadow: none;
 }
 
-/* Subtle circuit/contour texture using pseudo element */
-.farmer-hero-text::before {
-  content: \'\';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-.farmer-hero-img {
-  background: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+.farmer-top-content {
   position: relative;
+  z-index: 2;
 }
-.farmer-hero-img::after {
-  content: \'\';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to left, transparent 0%, var(--farmer-forest) 100%);
-}
-
-.farmer-display {
-  font-family: var(--font-serif);
-  font-size: clamp(3rem, 5vw, 4.5rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 16px;
-  color: #FFF;
-  position: relative;
-  z-index: 1;
-}
-
 /* Stat Cards */
 .farmer-stat-grid {
   display: grid;
@@ -747,4 +710,82 @@ h1, h2, h3, h4, h5, h6, .serif-heading {
   .farmer-stat-grid { padding: 24px; }
   .mandi-card { grid-template-columns: 1fr; gap: 12px; }
   .mc-rank { display: none; }
+}
+
+
+/* Glassmorphism Redesign */
+.page-background {
+  position: relative;
+  background-image: url('../assets/barley-sunrise.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.page-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(1.5px) brightness(0.85) saturate(1.15);
+  z-index: 0;
+}
+
+.vertical-text {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center right;
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.15);
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.glass-panel {
+  position: relative;
+  z-index: 2;
+  border-radius: 20px;
+  background: rgba(20, 35, 20, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 40px;
+}
+
+.glass-panel .farmer-stat-card,
+.glass-panel .farmer-form,
+.glass-panel .mandi-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #F5F1E8;
+  box-shadow: none;
+}
+
+.glass-panel .farmer-stat-header,
+.glass-panel .farmer-form-label,
+.glass-panel .mc-metric-label,
+.glass-panel .farmer-input,
+.glass-panel .mc-dist,
+.glass-panel h3,
+.glass-panel .farmer-stat-val,
+.glass-panel .mc-net-profit,
+.glass-panel .mc-name {
+  color: #F5F1E8 !important;
+}
+
+.glass-panel .farmer-input {
+  border-bottom-color: rgba(255,255,255,0.3);
+}
+
+.glass-panel .farmer-input option {
+  background: #1C2321;
 }

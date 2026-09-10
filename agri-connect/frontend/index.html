@@ -226,72 +226,82 @@
     <div class="container">
       <!-- Farmer Dashboard -->
       <div id="view-farmer" class="tenant-view">
-        <!-- Split Hero -->
-        <div class="farmer-hero">
-          <div class="farmer-hero-text">
-            <h2 class="farmer-display">Farmer Direct</h2>
-            <p style="font-size: 1.1rem; opacity: 0.9; max-width: 400px; font-weight: 500;">Net profit calculator and direct institutional produce listings.</p>
-          </div>
-          <div class="farmer-hero-img"></div>
-        </div>
+        <!-- Farmer Photographic Header -->
+        <div class="farmer-top-section">
+          <div class="farmer-top-content">
+            <div style="padding: 60px 48px 20px 48px; max-width: 800px;">
+              <h2 class="farmer-display" style="color: var(--text-main);">Farmer Direct</h2>
+              <p style="font-size: 1.1rem; opacity: 0.9; font-weight: 500; color: var(--text-muted);">Net profit calculator and direct institutional produce listings.</p>
+            </div>
 
-        <!-- Stat Cards -->
-        <div class="farmer-stat-grid">
-          <div class="farmer-stat-card">
-            <div class="farmer-stat-header"><span>Tracked APMC Mandis</span><i class="ph ph-map-pin farmer-stat-icon"></i></div>
-            <div class="farmer-stat-val">8</div>
-          </div>
-          <div class="farmer-stat-card">
-            <div class="farmer-stat-header"><span>Average Profit Premium</span><i class="ph ph-trend-up farmer-stat-icon"></i></div>
-            <div class="farmer-stat-val">₹245</div>
-          </div>
-          <div class="farmer-stat-card">
-            <div class="farmer-stat-header"><span>FPO Bulk Pooling</span><i class="ph ph-users farmer-stat-icon"></i></div>
-            <div class="farmer-stat-val">3</div>
-          </div>
-          <div class="farmer-stat-card">
-            <div class="farmer-stat-header"><span>Enterprise RFQs</span><i class="ph ph-file-text farmer-stat-icon"></i></div>
-            <div class="farmer-stat-val">₹70.3 L</div>
+            
+            <!-- Stat Cards & Router in Glass Panel -->
           </div>
         </div>
 
-        <!-- Router Panel -->
-        <div class="farmer-router-section">
-          <!-- Calculator Form -->
-          <form id="profit-optimizer-form" class="farmer-form">
-            <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--farmer-forest); margin-bottom: 24px;">Route Calculator</h3>
-            <div class="farmer-form-group">
-              <label class="farmer-form-label" for="opt-crop">COMMODITY</label>
-              <select class="farmer-input" id="opt-crop">
-                <option value="Onion">Onion</option>
-                <option value="Soybean">Soybean</option>
-                <option value="Wheat">Wheat</option>
-                <option value="Tomato">Tomato</option>
-              </select>
-            </div>
-            <div class="farmer-form-group">
-              <label class="farmer-form-label" for="opt-origin">FARM LOCATION</label>
-              <select class="farmer-input" id="opt-origin">
-                <option value='{"name":"Niphad, Nashik, MH","lat":20.0110,"lng":74.0520}'>Niphad, Nashik</option>
-                <option value='{"name":"Indore Outskirts, MP","lat":22.7196,"lng":75.8577}'>Indore, MP</option>
-              </select>
-            </div>
-            <div class="farmer-form-group">
-              <label class="farmer-form-label">QUANTITY (QUINTALS)</label>
-              <input type="number" class="farmer-input" id="opt-quantity" value="150">
-            </div>
-            <button type="submit" class="farmer-btn">CALCULATE ROUTE</button>
-          </form>
-          
-          <!-- Results Area -->
-          <div>
-            <h3 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--text-main); margin-bottom: 24px;">Market Routing Results</h3>
-            <div id="mandi-comparison-tbody" class="farmer-results-list">
-              <!-- Data injected via JS -->
-              <div style="padding: 40px; text-align: center; color: var(--text-muted); border: 1px dashed var(--farmer-border); border-radius: 8px;">
-                Select your parameters and calculate the route to see ranked mandi options.
+        <div class="page-background">
+          <div class="vertical-text">FARMER DIRECT</div>
+          <div class="glass-panel">
+            
+            <div class="farmer-stat-grid" style="background: transparent;">
+              <div class="farmer-stat-card">
+                <div class="farmer-stat-header"><span>Tracked APMC Mandis</span><i class="ph ph-map-pin farmer-stat-icon"></i></div>
+                <div class="farmer-stat-val">8</div>
+              </div>
+              <div class="farmer-stat-card">
+                <div class="farmer-stat-header"><span>Average Profit Premium</span><i class="ph ph-trend-up farmer-stat-icon"></i></div>
+                <div class="farmer-stat-val">₹245</div>
+              </div>
+              <div class="farmer-stat-card">
+                <div class="farmer-stat-header"><span>FPO Bulk Pooling</span><i class="ph ph-users farmer-stat-icon"></i></div>
+                <div class="farmer-stat-val">3</div>
+              </div>
+              <div class="farmer-stat-card">
+                <div class="farmer-stat-header"><span>Enterprise RFQs</span><i class="ph ph-file-text farmer-stat-icon"></i></div>
+                <div class="farmer-stat-val">₹70.3 L</div>
               </div>
             </div>
+
+            <!-- Router Panel -->
+            <div class="farmer-router-section">
+              <!-- Calculator Form -->
+              <form id="profit-optimizer-form" class="farmer-form">
+                <h3 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 24px;">Route Calculator</h3>
+                <div class="farmer-form-group">
+                  <label class="farmer-form-label" for="opt-crop">COMMODITY</label>
+                  <select class="farmer-input" id="opt-crop">
+                    <option value="Onion">Onion</option>
+                    <option value="Soybean">Soybean</option>
+                    <option value="Wheat">Wheat</option>
+                    <option value="Tomato">Tomato</option>
+                  </select>
+                </div>
+                <div class="farmer-form-group">
+                  <label class="farmer-form-label" for="opt-origin">FARM LOCATION</label>
+                  <select class="farmer-input" id="opt-origin">
+                    <option value='{"name":"Niphad, Nashik, MH","lat":20.0110,"lng":74.0520}'>Niphad, Nashik</option>
+                    <option value='{"name":"Indore Outskirts, MP","lat":22.7196,"lng":75.8577}'>Indore, MP</option>
+                  </select>
+                </div>
+                <div class="farmer-form-group">
+                  <label class="farmer-form-label">QUANTITY (QUINTALS)</label>
+                  <input type="number" class="farmer-input" id="opt-quantity" value="150">
+                </div>
+                <button type="submit" class="farmer-btn">CALCULATE ROUTE</button>
+              </form>
+              
+              <!-- Results Area -->
+              <div>
+                <h3 style="font-family: var(--font-serif); font-size: 1.25rem; margin-bottom: 24px;">Market Routing Results</h3>
+                <div id="mandi-comparison-tbody" class="farmer-results-list">
+                  <!-- Data injected via JS -->
+                  <div style="padding: 40px; text-align: center; border: 1px dashed rgba(255,255,255,0.3); border-radius: 8px;">
+                    Select your parameters and calculate the route to see ranked mandi options.
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -483,5 +493,101 @@
       document.getElementById('tools-select').value = ''; // reset
     }
   </script>
+
+  <script>
+    // Animation JS for Number Counters
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements to animate
+      const textNodesToAnimate = [
+        { text: '8', target: 8, prefix: '', suffix: '' },
+        { text: '₹245', target: 245, prefix: '₹', suffix: '' },
+        { text: '+₹245/qtl', target: 245, prefix: '+₹', suffix: '/qtl' },
+        { text: '142 Farmers', target: 142, prefix: '', suffix: ' Farmers' },
+        { text: '142', target: 142, prefix: '', suffix: '' },
+        { text: '₹70.3 L', target: 70.3, prefix: '₹', suffix: ' L', isFloat: true },
+        { text: '₹70.35 L', target: 70.35, prefix: '₹', suffix: ' L', isFloat: true },
+        { text: '38.5%', target: 38.5, prefix: '', suffix: '%', isFloat: true },
+        { text: '96.2%', target: 96.2, prefix: '', suffix: '%', isFloat: true },
+        { text: '18', target: 18, prefix: '', suffix: '' }
+      ];
+      
+      const easeOutExpo = (t) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      
+      const animateCounter = (el, target, prefix, suffix, isFloat) => {
+        if (el.dataset.animated === 'true') return;
+        el.dataset.animated = 'true';
+        
+        let startTimestamp = null;
+        const duration = 1500; // 1.5s
+        
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          const easeProgress = easeOutExpo(progress);
+          
+          let currentVal = easeProgress * target;
+          
+          if (!isFloat) {
+            currentVal = Math.floor(currentVal);
+          } else {
+            currentVal = currentVal.toFixed(1);
+            if (target.toString().split('.')[1]?.length === 2) {
+               currentVal = (easeProgress * target).toFixed(2);
+            }
+          }
+          
+          el.innerText = prefix + currentVal + suffix;
+          
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          } else {
+            el.innerText = prefix + target + suffix;
+          }
+        };
+        window.requestAnimationFrame(step);
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target, 
+              parseFloat(entry.target.dataset.target), 
+              entry.target.dataset.prefix, 
+              entry.target.dataset.suffix,
+              entry.target.dataset.float === 'true'
+            );
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      // Wrap specific text nodes in index.html to animate
+      const wrapTextNodes = (node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const match = textNodesToAnimate.find(t => t.text === node.nodeValue.trim());
+          if (match && node.parentElement.tagName !== 'SPAN' && !node.parentElement.classList.contains('js-counter')) {
+            const span = document.createElement('span');
+            span.classList.add('js-counter');
+            span.dataset.target = match.target;
+            span.dataset.prefix = match.prefix;
+            span.dataset.suffix = match.suffix;
+            span.dataset.float = match.isFloat ? 'true' : 'false';
+            span.innerText = node.nodeValue;
+            
+            node.parentNode.insertBefore(span, node);
+            node.parentNode.removeChild(node);
+            
+            observer.observe(span);
+          }
+        } else {
+          for (let i = 0; i < node.childNodes.length; i++) {
+            wrapTextNodes(node.childNodes[i]);
+          }
+        }
+      };
+      
+      wrapTextNodes(document.body);
+    });
+  </script>
 </body>
+
 </html>
